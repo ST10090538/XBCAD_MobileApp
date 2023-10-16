@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">XBCAD_POE</string>
+
+    <string-array name="Users">
+        <item>Student</item>
+        <item>Lecturer</item>
+        <item>NPO</item>
+    </string-array>
+</resources>
