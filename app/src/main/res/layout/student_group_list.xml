@@ -3,25 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="410dp"
-        android:layout_height="46dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@drawable/_bottom"
-        tools:layout_editor_absoluteX="0dp" />
+
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="414dp"
         android:layout_height="53dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/_top" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/_top"
+        android:contentDescription="TODO"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/textView4"
@@ -37,52 +34,65 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="120dp"
+        android:id="@+id/groupListButton"
+        android:layout_width="130dp"
         android:layout_height="60dp"
-        android:layout_marginStart="38dp"
         android:layout_marginTop="10dp"
-        android:text="Group List"
-        app:cornerRadius="0dp"
-        android:textColor="@color/black"
         android:backgroundTint="@color/lightGreen"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
+        android:text="Group List"
+        android:textColor="@color/black"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/announcementsButton"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
-        android:id="@+id/button4"
-        android:layout_width="120dp"
+        android:id="@+id/announcementsButton"
+        android:layout_width="130dp"
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
+        android:backgroundTint="@color/lightBlue"
         android:text="Group Discussion"
-        app:cornerRadius="0dp"
         android:textColor="@color/black"
-        android:backgroundTint="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/checklistButton"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintStart_toEndOf="@+id/groupListButton"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
-        android:id="@+id/button5"
-        android:layout_width="120dp"
+        android:id="@+id/checklistButton"
+        android:layout_width="130dp"
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="38dp"
-        android:text="Project"
+        android:backgroundTint="@color/lightBlue"
+        android:text="Checklist"
         android:textColor="@color/black"
-        android:backgroundTint="@color/white"
         app:cornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/announcementsButton"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="401dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="-8dp"
+        android:src="@drawable/_tabline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/announcementsButton" />
+
     <ScrollView
+        android:id="@+id/scrollView4"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/button4">
+        android:layout_marginTop="135dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8">
 
 
         <TableLayout
@@ -107,4 +117,14 @@
         </TableLayout>
     </ScrollView>
 
+
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="410dp"
+        android:layout_height="46dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/_bottom" />
 </androidx.constraintlayout.widget.ConstraintLayout>

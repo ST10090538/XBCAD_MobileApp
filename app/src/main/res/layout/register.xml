@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="66dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="208dp"
         android:text="Username"
         android:textColor="@color/black"
@@ -50,10 +50,11 @@
     <EditText
         android:id="@+id/editTextText3"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="66dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="45dp"
+        android:background="@drawable/edittext_border"
         android:ems="10"
         android:inputType="text"
         android:text=""
@@ -79,9 +80,10 @@
     <EditText
         android:id="@+id/editTextText4"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="66dp"
         android:layout_marginEnd="45dp"
+        android:background="@drawable/edittext_border"
         android:ems="10"
         android:inputType="text"
         android:text=""
@@ -107,13 +109,16 @@
     <EditText
         android:id="@+id/editTextTextPassword3"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="66dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="45dp"
+        android:background="@drawable/edittext_border"
         android:ems="10"
         android:foregroundTint="@color/black"
         android:inputType="textPassword"
         android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -131,13 +136,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword3" />
 
-    <Spinner
-        android:id="@+id/userSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="66dp"
-        android:layout_marginEnd="227dp"
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/lightBlue"
+        android:text="Register"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
