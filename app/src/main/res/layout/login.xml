@@ -46,10 +46,10 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/txtUsernameLogin" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/txtUsernameLogin"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginStart="66dp"
@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/txtPasswordLogin"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginStart="66dp"
@@ -104,7 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/txtPasswordLogin" />
 
     <TextView
         android:id="@+id/textView5"

@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <EditText
-        android:id="@+id/editTextText3"
+        android:id="@+id/txtUsername"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginStart="66dp"
@@ -75,10 +75,10 @@
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText3" />
+        app:layout_constraintTop_toBottomOf="@+id/txtUsername" />
 
     <EditText
-        android:id="@+id/editTextText4"
+        android:id="@+id/txtEmail"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginStart="66dp"
@@ -104,10 +104,10 @@
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText4" />
+        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
     <EditText
-        android:id="@+id/editTextTextPassword3"
+        android:id="@+id/txtPassword"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginStart="66dp"
@@ -134,19 +134,31 @@
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword3" />
+        app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/btnRegister"
         android:layout_width="250dp"
         android:layout_height="70dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="@color/lightBlue"
         android:text="Register"
         android:textColor="@color/white"
         android:textSize="30sp"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spnRole" />
+
+    <Spinner
+        android:id="@+id/spnRole"
+        android:layout_width="208dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/roles_array"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.325"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 

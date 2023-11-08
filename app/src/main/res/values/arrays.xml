@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">XBCAD_POE</string>
-    <string-array name="Users">
+    <array name="roles_array">
         <item>Student</item>
         <item>Lecturer</item>
         <item>NPO</item>
-    </string-array>
+    </array>
 </resources>
