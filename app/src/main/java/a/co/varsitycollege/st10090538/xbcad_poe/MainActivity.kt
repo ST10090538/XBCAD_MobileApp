@@ -1,5 +1,6 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
+import Tools.TLSSocketFactory
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,7 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import java.net.HttpURLConnection
 import javax.net.ssl.HttpsURLConnection
 
 class MainActivity : AppCompatActivity() {

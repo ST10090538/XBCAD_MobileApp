@@ -1,4 +1,4 @@
-package a.co.varsitycollege.st10090538.xbcad_poe
+package Models
 
 class User(userID:Int, userName: String, email:String, userType:Int) {
     val userID = userID

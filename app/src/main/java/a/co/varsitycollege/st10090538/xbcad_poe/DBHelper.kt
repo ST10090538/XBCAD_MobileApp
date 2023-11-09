@@ -1,10 +1,12 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
+import Models.Group
+import Models.Project
+import Models.User
+import Tools.Encryption
 import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.sql.SQLException
-import javax.net.ssl.HttpsURLConnection
-import kotlin.concurrent.thread
 
 
 class DBHelper {
