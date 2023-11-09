@@ -29,11 +29,11 @@ class DBHelper {
 
                     preparedStatement.executeUpdate()
                 }
-                true  // Operation was successful
+                true
 
             } catch (e: Exception) {
                 e.printStackTrace()
-                false  // Operation failed
+                false
             }catch (ex: SQLException){
                 ex.printStackTrace()
             }
@@ -45,6 +45,7 @@ class DBHelper {
             try {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
+                GlobalData.connection = connection
                 if (connection != null) {
                     val query = "SELECT UserID, Username, Email, UserType FROM Users WHERE Username = '$uname' AND Password = '${Encryption.encryptData(password)}'"
                     val preparedStatement: PreparedStatement = connection.prepareStatement(query)
