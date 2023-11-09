@@ -70,5 +70,69 @@ class DBHelper {
         }
     }
 
+    fun getGroups(): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+
+                if (connection != null) {
+                    val query = "SELECT GroupID, GroupName, CreationDate, ProjectID FROM Groups"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val groupID = resultSet.getInt("GroupID")
+                        val groupName = resultSet.getString("GroupName")
+                        val creationDate = resultSet.getDate("CreationDate")
+                        val projectID = resultSet.getString("ProjectID").toInt()
+
+                        val group = Group(groupID, groupName, creationDate, projectID)
+                        GlobalData.groupList += group
+                    }
+
+                    resultSet.close()
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getProjects(): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+
+                if (connection != null) {
+                    val query = "SELECT * FROM Projects"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val projectID = resultSet.getInt("ProjectID")
+                        val projectName = resultSet.getString("ProjectName")
+                        val npoNeeds = resultSet.getString("NPONeedsDescription")
+                        val projectStatus = resultSet.getInt("ProjectStatus")
+                        val assignedDate = resultSet.getDate("AssignedDate")
+                        val completionDate = resultSet.getDate("CompletionDate")
+                        val userID = resultSet.getInt("UserID")
+
+                        val project = Project(projectID, projectName, npoNeeds, projectStatus, assignedDate, completionDate, userID)
+                        GlobalData.projectsList += project
+                    }
+
+                    resultSet.close()
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
 }
