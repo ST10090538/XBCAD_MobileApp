@@ -277,5 +277,104 @@ class DBHelper {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun enrollStudentInGroup(groupID: Int, userID: Int): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                GlobalData.connection = DriverManager.getConnection(connectionString)
+                val connection = GlobalData.connection
+
+                if(connection != null)
+                {
+                    val currentDateTime = LocalDateTime.now()
+                    val currentDate = Date.valueOf(currentDateTime.toLocalDate().toString())
+
+                    val query =
+                        "EXEC EnrollStudentInGroup @GroupID = ?, @StudentID = ?, @JoinDate = ?"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setInt(1, groupID)
+                    preparedStatement.setInt(2, userID )
+                    preparedStatement.setDate(3, currentDate )
+
+                    preparedStatement.executeUpdate()
+                    preparedStatement.close()
+                    connection.close()
+                }
+
+                true
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }catch (ex: SQLException){
+                ex.printStackTrace()
+            }
+        }
+    }
+
+    fun createProject(projectName: String, needsDesc: String, userID: Int): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                GlobalData.connection = DriverManager.getConnection(connectionString)
+                val connection = GlobalData.connection
+
+                if(connection != null)
+                {
+                    val query =
+                        "EXEC CreateProject @ProjectName = ?, @NPONeedsDescription = ?, @ProjectStatus = ?, @UserID = ?"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setString(1, projectName)
+                    preparedStatement.setString(2, needsDesc )
+                    preparedStatement.setInt(3, 0 )
+                    preparedStatement.setInt(4, userID )
+
+                    preparedStatement.executeUpdate()
+                    preparedStatement.close()
+                    connection.close()
+                }
+
+                true
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }catch (ex: SQLException){
+                ex.printStackTrace()
+            }
+        }
+    }
+
+    fun assignProject(groupID: Int, projectID: Int): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                GlobalData.connection = DriverManager.getConnection(connectionString)
+                val connection = GlobalData.connection
+
+                if(connection != null)
+                {
+                    val query =
+                        "EXEC AssignProjectToGroup @GroupID = ?, @ProjectID = ?"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setInt(1, groupID )
+                    preparedStatement.setInt(2, projectID )
+
+                    preparedStatement.executeUpdate()
+                    preparedStatement.close()
+                    connection.close()
+                }
+
+                true
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }catch (ex: SQLException){
+                ex.printStackTrace()
+            }
+        }
+    }
 
 }
