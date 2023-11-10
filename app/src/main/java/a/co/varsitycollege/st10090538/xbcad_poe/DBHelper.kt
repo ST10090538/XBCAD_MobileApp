@@ -1,12 +1,24 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
+import Models.Announcement
 import Models.Group
+import Models.GroupChatMessage
 import Models.Project
+import Models.StudentGroup
 import Models.User
 import Tools.Encryption
+import android.os.Build
+import androidx.annotation.RequiresApi
+import net.sourceforge.jtds.jdbc.DateTime
+import java.sql.Date
 import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.sql.SQLException
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatterBuilder
 
 
 class DBHelper {
@@ -136,5 +148,134 @@ class DBHelper {
             }
         }
     }
+
+    fun getAnnouncements(): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+
+                if (connection != null) {
+                    val query = "SELECT * FROM Announcements"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val id = resultSet.getInt("Id")
+                        val username = resultSet.getString("Username")
+                        val title = resultSet.getString("Title")
+                        val content = resultSet.getString("Content")
+                        val date = resultSet.getDate("Date")
+
+                        val announcement = Announcement(id, username, title, content, date)
+                        GlobalData.announcementList += announcement
+                    }
+
+                    resultSet.close()
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getGroupMessages(groupID: Int): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+
+                if (connection != null) {
+                    val query = "SELECT ID, UserID, MessageText FROM GroupChatMessages WHERE GroupID = $groupID"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val id = resultSet.getInt("ID")
+                        val userid = resultSet.getInt("UserID")
+                        val text = resultSet.getString("MessageText")
+
+                        val message = GroupChatMessage(id, groupID, userid, text)
+                        GlobalData.groupMessageList += message
+                    }
+
+                    resultSet.close()
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getStudentGroups(): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+
+                if (connection != null) {
+                    val query = "SELECT * FROM StudentGroups"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val id = resultSet.getInt("StudentGroupID")
+                        val groupID = resultSet.getInt("GroupID")
+                        val studentID = resultSet.getInt("StudentID")
+                        val date = resultSet.getDate("JoinDate")
+
+                        val studentGroup = StudentGroup(id, groupID, studentID, date)
+                        GlobalData.studentGroupList += studentGroup
+                    }
+
+                    resultSet.close()
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addGroup(groupName: String): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                GlobalData.connection = DriverManager.getConnection(connectionString)
+                val connection = GlobalData.connection
+
+                if(connection != null)
+                {
+                    val currentDateTime = LocalDateTime.now()
+                    val currentDate = Date.valueOf(currentDateTime.toLocalDate().toString())
+
+                    val query =
+                        "EXEC CreateGroup @GroupName = ?, @CreationDate = ?, @ProjectID = 0, @LecturerID = 0"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setString(1, groupName)
+                    preparedStatement.setDate(2,currentDate )
+
+                    preparedStatement.executeUpdate()
+                    preparedStatement.close()
+                    connection.close()
+                }
+
+                true
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }catch (ex: SQLException){
+                ex.printStackTrace()
+            }
+        }
+    }
+
 
 }

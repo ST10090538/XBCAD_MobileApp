@@ -39,13 +39,13 @@
         android:text="Group View"
         android:textColor="@color/black"
         app:cornerRadius="0dp"
-        app:layout_constraintEnd_toStartOf="@+id/announcementsButton"
+        app:layout_constraintEnd_toStartOf="@+id/btnGroupChat"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
-        android:id="@+id/announcementsButton"
+        android:id="@+id/btnGroupChat"
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/lightBlue"
@@ -66,7 +66,7 @@
         android:src="@drawable/_tabline1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/announcementsButton" />
+        app:layout_constraintTop_toBottomOf="@+id/btnGroupChat" />
 
     <ScrollView
         android:id="@+id/scrollView4"

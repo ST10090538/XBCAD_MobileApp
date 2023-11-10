@@ -28,6 +28,7 @@
         <activity android:name=".LecturerViewGroups"></activity>
         <activity android:name=".NpoProjectsList"></activity>
         <activity android:name=".StudentGroupList"></activity>
+        <activity android:name=".StudentGroupDiscussion"></activity>
     </application>
 
 </manifest>

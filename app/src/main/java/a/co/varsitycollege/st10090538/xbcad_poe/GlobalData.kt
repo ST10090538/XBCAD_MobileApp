@@ -1,8 +1,6 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
-import Models.Group
-import Models.Project
-import Models.User
+import Models.*
 import java.sql.Connection
 
 object GlobalData {
@@ -10,4 +8,7 @@ object GlobalData {
     var loggedInUser: User? = null
     var groupList: List<Group> = emptyList()
     var projectsList: List<Project> = emptyList()
+    var announcementList: List<Announcement> = emptyList()
+    var groupMessageList: List<GroupChatMessage> = emptyList()
+    var studentGroupList: List<StudentGroup> = emptyList()
 }
