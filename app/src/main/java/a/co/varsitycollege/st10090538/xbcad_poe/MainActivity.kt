@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
+        GlobalData.loggedInUser = null
         HttpsURLConnection.setDefaultSSLSocketFactory(TLSSocketFactory())
         findViewById<TextView>(R.id.registerText).setOnClickListener(){
             startActivity(Intent(this, Register::class.java))
