@@ -45,7 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
-        android:id="@+id/btnGroupChat"
+        android:id="@+id/btnAnnouncements"
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/lightBlue"
@@ -66,7 +66,7 @@
         android:src="@drawable/_tabline1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGroupChat" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAnnouncements" />
 
     <ScrollView
         android:id="@+id/scrollView4"
@@ -92,7 +92,16 @@
             android:layout_marginBottom="30dp"
             android:textSize="30sp"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="204dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
     <TableLayout
+        android:id="@+id/groupTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

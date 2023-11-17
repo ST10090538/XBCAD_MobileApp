@@ -8,12 +8,15 @@ import Models.StudentGroup
 import Models.User
 import Tools.Encryption
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import net.sourceforge.jtds.jdbc.DateTime
 import java.sql.Date
 import java.sql.DriverManager
 import java.sql.PreparedStatement
+import java.sql.ResultSet
 import java.sql.SQLException
+import java.sql.Statement
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -87,10 +90,12 @@ class DBHelper {
     fun getGroups(): Thread {
         return Thread {
             try {
+                Log.d("DBHelper", "Attempting to connect to database...")
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
 
                 if (connection != null) {
+                    Log.d("DBHelper", "Connected to database successfully.")
                     val query = "SELECT GroupID, GroupName, CreationDate, ProjectID FROM Groups"
                     val preparedStatement: PreparedStatement = connection.prepareStatement(query)
                     val resultSet = preparedStatement.executeQuery()
@@ -105,11 +110,16 @@ class DBHelper {
                         GlobalData.groupList += group
                     }
 
+                    Log.d("DBHelper", "Retrieved ${GlobalData.groupList.size} groups from database.")
+
                     resultSet.close()
                     preparedStatement.close()
                     connection.close()
+                } else {
+                    Log.d("DBHelper", "Failed to connect to database.")
                 }
             } catch (e: Exception) {
+                Log.e("DBHelper", "An error occurred: ${e.message}", e)
                 e.printStackTrace()
             }
         }
@@ -149,36 +159,71 @@ class DBHelper {
         }
     }
 
-    fun getAnnouncements(): Thread {
-        return Thread {
+
+    fun saveAnnouncement(username: String, title: String, content: String, date: Date) {
+        Thread {
             try {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
 
                 if (connection != null) {
-                    val query = "SELECT * FROM Announcements"
+                    val query = "INSERT INTO Announcements (Username, Title, Content, Date) VALUES (?, ?, ?, ?)"
                     val preparedStatement: PreparedStatement = connection.prepareStatement(query)
-                    val resultSet = preparedStatement.executeQuery()
+                    preparedStatement.setString(1, username)
+                    preparedStatement.setString(2, title)
+                    preparedStatement.setString(3, content)
+                    preparedStatement.setDate(4, java.sql.Date(date.time))
 
-                    while (resultSet.next()) {
-                        val id = resultSet.getInt("Id")
-                        val username = resultSet.getString("Username")
-                        val title = resultSet.getString("Title")
-                        val content = resultSet.getString("Content")
-                        val date = resultSet.getDate("Date")
+                    preparedStatement.executeUpdate()
 
-                        val announcement = Announcement(id, username, title, content, date)
-                        GlobalData.announcementList += announcement
-                    }
-
-                    resultSet.close()
                     preparedStatement.close()
                     connection.close()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
+        }.start()
+    }
+
+    fun getAnnouncements(callback: AnnouncementsCallback): List<Announcement> {
+        val announcements = mutableListOf<Announcement>()
+        Thread {
+            try {
+                Log.d("Database", "Connecting to the database...")
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                Log.d("Database", "Connection successful!")
+
+                if (connection != null) {
+                    val query = "SELECT * FROM Announcements"
+                    val statement: Statement = connection.createStatement()
+                    val resultSet = statement.executeQuery(query)
+
+                    Log.d("Database", "Query executed, processing results...")
+                    while (resultSet.next()) {
+                        val id = resultSet.getInt("id")
+                        val username = resultSet.getString("Username")
+                        val title = resultSet.getString("Title")
+                        val content = resultSet.getString("Content")
+                        val date = resultSet.getDate("Date")
+
+                        announcements.add(Announcement(id, username, title, content, date))
+                        Log.d("Database", "Added announcement with ID: $id")
+                        callback.onCallback(announcements)
+                    }
+
+                    resultSet.close()
+                    statement.close()
+                    connection.close()
+                    Log.d("Database", "Database connection closed.")
+                }
+            } catch (e: Exception) {
+                Log.e("Database", "An error occurred: ${e.message}")
+                e.printStackTrace()
+            }
+        }.start()
+
+        return announcements
     }
 
     fun getGroupMessages(groupID: Int): Thread {

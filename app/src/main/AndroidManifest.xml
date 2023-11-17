@@ -29,6 +29,8 @@
         <activity android:name=".NpoProjectsList"></activity>
         <activity android:name=".StudentGroupList"></activity>
         <activity android:name=".StudentGroupDiscussion"></activity>
+        <activity android:name=".LecturerAddAnnouncement"></activity>
+        <activity android:name=".LecturerAnnouncements"></activity>
     </application>
 
 </manifest>
