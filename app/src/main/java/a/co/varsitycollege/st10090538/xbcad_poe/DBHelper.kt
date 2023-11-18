@@ -422,4 +422,31 @@ class DBHelper {
         }
     }
 
+    fun saveGroupChatMessage(username: String, groupName: String, message: String): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+               GlobalData.connection = DriverManager.getConnection(connectionString)
+                val connection = GlobalData.connection
+
+                if (connection != null) {
+                    val query =
+                        "INSERT INTO GroupChatMessages (Username, GroupName, MessageText, Date) VALUES (?, ?, ?, ?)"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setString(1, username)
+                    preparedStatement.setString(2, groupName)
+                    preparedStatement.setString(3, message)
+                    preparedStatement.setDate(4, java.sql.Date(System.currentTimeMillis()))
+
+                    preparedStatement.executeUpdate()
+
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 }
