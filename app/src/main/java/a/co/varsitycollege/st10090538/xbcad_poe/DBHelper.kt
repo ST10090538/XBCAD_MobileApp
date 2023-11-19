@@ -288,7 +288,7 @@ class DBHelper {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addGroup(groupName: String): Thread {
+    fun addGroup(groupName: String, callback: (Boolean) -> Unit): Thread {
         return Thread {
             try {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
@@ -309,17 +309,20 @@ class DBHelper {
                     preparedStatement.executeUpdate()
                     preparedStatement.close()
                     connection.close()
-                }
-
-                true
+                
+//Added a callback boolean
+                    callback(true)
+                } else {
+                    callback(false)
 
             } catch (e: Exception) {
                 e.printStackTrace()
-                false
+                callback(false)
             }catch (ex: SQLException){
                 ex.printStackTrace()
+                callback(false)
             }
-        }
+        }.start()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
