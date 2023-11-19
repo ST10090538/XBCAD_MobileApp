@@ -91,7 +91,7 @@ class StudentGroupList : AppCompatActivity() {
     }
 
     private fun refreshGroupList() {
-        // Fetch student groups from the database asynchronously
+        // Fetch student groups from the database
         Executors.newSingleThreadExecutor().execute {
             dbHelper.getStudentGroups().start()
 
