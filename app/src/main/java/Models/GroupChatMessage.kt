@@ -1,4 +1,12 @@
 package Models
 
-class GroupChatMessage(val id: Int, val groupID: Int, val userID: Int, val text: String) {
-}
+import java.time.LocalDateTime
+
+data class GroupChatMessage(
+    var id: Int,
+    var groupID: Int,
+    var userID: Int,
+    var username: String,
+    var messageText: String,
+    var timestamp: java.util.Date
+)

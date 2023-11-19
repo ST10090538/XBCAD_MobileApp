@@ -3,36 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="10dp">
 
     <TextView
-        android:id="@+id/groupName"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp" />
+        android:textStyle="bold"
+        android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/creationDate"
+        android:id="@+id/message_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/projectName"
+        android:id="@+id/timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
-
-    <LinearLayout
-        android:id="@+id/studentList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
-
-    <Button
-        android:id="@+id/chatButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chat with group" />
+        android:textSize="12sp" />
 
 </LinearLayout>

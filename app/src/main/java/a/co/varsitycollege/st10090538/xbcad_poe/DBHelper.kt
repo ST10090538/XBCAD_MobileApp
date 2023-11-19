@@ -17,6 +17,7 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
+import java.sql.Timestamp
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -106,7 +107,11 @@ class DBHelper {
                         val creationDate = resultSet.getDate("CreationDate")
                         val projectID = resultSet.getString("ProjectID").toInt()
 
-                        val group = Group(groupID, groupName, creationDate, projectID)
+                        // Fetch the project name and the list of students for the group
+                        val projectName = getProjectName(projectID)
+                        val students = getStudentsByGroupId(groupID)
+
+                        val group = Group(groupID, groupName, creationDate, projectID, projectName, students)
                         GlobalData.groupList += group
                     }
 
@@ -123,6 +128,35 @@ class DBHelper {
                 e.printStackTrace()
             }
         }
+    }
+
+
+    fun getProjectName(projectID: Int): String {
+        var projectName = ""
+
+        try {
+            Class.forName("net.sourceforge.jtds.jdbc.Driver")
+            val connection = DriverManager.getConnection(connectionString)
+
+            if (connection != null) {
+                val query = "SELECT ProjectName FROM Projects WHERE ProjectID = ?"
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setInt(1, projectID)
+                val resultSet = preparedStatement.executeQuery()
+
+                if (resultSet.next()) {
+                    projectName = resultSet.getString("ProjectName")
+                }
+
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return projectName
     }
 
     fun getProjects(): Thread {
@@ -226,35 +260,157 @@ class DBHelper {
         return announcements
     }
 
-    fun getGroupMessages(groupID: Int): Thread {
-        return Thread {
+    fun getGroupMessages(groupID: Int): List<GroupChatMessage> {
+        val groupChatMessages = mutableListOf<GroupChatMessage>()
+
+        try {
+            Log.d("getGroupMessages", "Attempting to get group messages for group ID: $groupID")
+            Class.forName("net.sourceforge.jtds.jdbc.Driver")
+            val connection = DriverManager.getConnection(connectionString)
+
+            if (connection != null) {
+                Log.d("getGroupMessages", "Successfully established connection")
+                val query = "SELECT ID, UserID, MessageText, Timestamp FROM GroupChatMessages WHERE GroupID = $groupID"
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                val resultSet = preparedStatement.executeQuery()
+
+                while (resultSet.next()) {
+                    val id = resultSet.getInt("ID")
+                    val userID = resultSet.getInt("UserID")
+                    val text = resultSet.getString("MessageText")
+                    val timestamp = resultSet.getTimestamp("Timestamp")
+
+                    // Use getUsername() to retrieve the username for the userID
+                    val username = getUsername(userID)
+
+                    val message = GroupChatMessage(id, groupID, userID, username, text, timestamp)
+                    groupChatMessages.add(message)
+                }
+                Log.d("getGroupMessages", "Retrieved ${groupChatMessages.size} messages")
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+            }
+        } catch (e: Exception) {
+            Log.e("getGroupMessages", "Error occurred: ${e.message}")
+            e.printStackTrace()
+        }
+
+        return groupChatMessages
+    }
+
+    fun saveGroupMessage(groupID: Int, senderUserID: Int, messageText: String, timestamp: java.util.Date) {
+        Thread {
             try {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
+                val query = "INSERT INTO GroupChatMessages (GroupID, UserID, MessageText, Timestamp) VALUES (?, ?, ?, ?)"
 
-                if (connection != null) {
-                    val query = "SELECT ID, UserID, MessageText FROM GroupChatMessages WHERE GroupID = $groupID"
-                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
-                    val resultSet = preparedStatement.executeQuery()
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setInt(1, groupID)
+                preparedStatement.setInt(2, senderUserID)
+                preparedStatement.setString(3, messageText)
+                preparedStatement.setTimestamp(4, Timestamp(timestamp.time))
 
-                    while (resultSet.next()) {
-                        val id = resultSet.getInt("ID")
-                        val userid = resultSet.getInt("UserID")
-                        val text = resultSet.getString("MessageText")
+                preparedStatement.executeUpdate()
 
-                        val message = GroupChatMessage(id, groupID, userid, text)
-                        GlobalData.groupMessageList += message
-                    }
-
-                    resultSet.close()
-                    preparedStatement.close()
-                    connection.close()
-                }
+                preparedStatement.close()
+                connection.close()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
+        }.start()
     }
+
+    fun saveChatMessage(senderUserID: Int, receiverUserID: Int, messageText: String, timestamp: java.util.Date) {
+        Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                val query = "INSERT INTO ChatMessages (SenderID, ReceiverID, MessageText, Timestamp) VALUES (?, ?, ?, ?)"
+
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setInt(1, senderUserID)
+                preparedStatement.setInt(2, receiverUserID)
+                preparedStatement.setString(3, messageText)
+                preparedStatement.setTimestamp(4, Timestamp(timestamp.time))
+
+                preparedStatement.executeUpdate()
+
+                preparedStatement.close()
+                connection.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
+
+    fun insertChatMessage(senderUserID: Int, receiverUserID: Int, messageText: String) {
+        saveChatMessage(senderUserID, receiverUserID, messageText, java.util.Date())
+    }
+
+
+    fun getUser(userID: Int): User? {
+        var user: User? = null
+
+        Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                val query = "SELECT Username, Email, UserType FROM Users WHERE UserID = ?"
+
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setInt(1, userID)
+
+                val resultSet = preparedStatement.executeQuery()
+
+                if (resultSet.next()) {
+                    val username = resultSet.getString("Username")
+                    val email = resultSet.getString("Email")
+                    val userType = resultSet.getInt("UserType")
+
+                    user = User(userID, username, email, userType)
+                }
+
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+
+        return user
+    }
+
+    fun getUsername(userID: Int): String {
+        var username = ""
+        try {
+            Class.forName("net.sourceforge.jtds.jdbc.Driver")
+            val connection = DriverManager.getConnection(connectionString)
+
+            if (connection != null) {
+                val query = "SELECT Username FROM Users WHERE UserID = $userID"
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                val resultSet = preparedStatement.executeQuery()
+
+                if (resultSet.next()) {
+                    username = resultSet.getString("Username")
+                }
+
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return username
+    }
+
+
+
 
     fun getStudentGroups(): Thread {
         return Thread {
@@ -309,20 +465,17 @@ class DBHelper {
                     preparedStatement.executeUpdate()
                     preparedStatement.close()
                     connection.close()
-                
-//Added a callback boolean
-                    callback(true)
-                } else {
-                    callback(false)
+                }
+
+                true
 
             } catch (e: Exception) {
                 e.printStackTrace()
-                callback(false)
+                false
             }catch (ex: SQLException){
                 ex.printStackTrace()
-                callback(false)
             }
-        }.start()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -425,31 +578,99 @@ class DBHelper {
         }
     }
 
-    fun saveGroupChatMessage(username: String, groupName: String, message: String): Thread {
+    fun getStudentsWithoutGroups(students: List<User>): Thread {
         return Thread {
             try {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
-               GlobalData.connection = DriverManager.getConnection(connectionString)
-                val connection = GlobalData.connection
+                val connection = DriverManager.getConnection(connectionString)
 
                 if (connection != null) {
-                    val query =
-                        "INSERT INTO GroupChatMessages (Username, GroupName, MessageText, Date) VALUES (?, ?, ?, ?)"
-                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
-                    preparedStatement.setString(1, username)
-                    preparedStatement.setString(2, groupName)
-                    preparedStatement.setString(3, message)
-                    preparedStatement.setDate(4, java.sql.Date(System.currentTimeMillis()))
+                    for (student in students) {
+                        val query = "SELECT * FROM StudentGroups WHERE StudentID = ?"
+                        val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                        preparedStatement.setInt(1, student.userID)
+                        val resultSet = preparedStatement.executeQuery()
 
-                    preparedStatement.executeUpdate()
+                        if (!resultSet.next()) {
+                            GlobalData.studentsWithoutGroupsList.add(student)
+                        }
 
-                    preparedStatement.close()
+                        resultSet.close()
+                        preparedStatement.close()
+                    }
                     connection.close()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
+    }
+
+    fun getAllStudents(): List<User> {
+        val students = mutableListOf<User>()
+
+        try {
+            Class.forName("net.sourceforge.jtds.jdbc.Driver")
+            val connection = DriverManager.getConnection(connectionString)
+            val query = "SELECT * FROM Users WHERE UserType = 1"
+            val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+            val resultSet = preparedStatement.executeQuery()
+
+            while (resultSet.next()) {
+                val user = User(
+                    userID = resultSet.getInt("UserID"),
+                    userName = resultSet.getString("Username"),
+                    email = resultSet.getString("Email"),
+                    userType = resultSet.getInt("UserType")
+                )
+                students.add(user)
+            }
+
+            resultSet.close()
+            preparedStatement.close()
+            connection.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return students
+    }
+
+    fun getStudentsByGroupId(groupID: Int): List<User> {
+        val students = mutableListOf<User>()
+
+        try {
+            Class.forName("net.sourceforge.jtds.jdbc.Driver")
+            val connection = DriverManager.getConnection(connectionString)
+
+            if (connection != null) {
+                val query = "SELECT StudentID FROM StudentGroups WHERE GroupID = ?"
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setInt(1, groupID)
+                val resultSet = preparedStatement.executeQuery()
+
+                while (resultSet.next()) {
+                    val studentID = resultSet.getInt("StudentID")
+                    val username = getUsername(studentID)
+
+                    val student = User(
+                        userID = studentID,
+                        userName = username ?: "",
+                        email = "",
+                        userType = 1
+                    )
+                    students += student
+                }
+
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return students
     }
 
 }

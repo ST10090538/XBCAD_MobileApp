@@ -2,9 +2,11 @@ package Models
 
 import java.sql.Date
 
-class Group(groupID: Int, groupName: String, creationDate: Date, projectID: Int) {
-    val groupID = groupID
-    val groupName = groupName
-    val creationDate = creationDate
-    val projectID = projectID
-}
+class Group(
+    val groupID: Int,
+    val groupName: String,
+    val creationDate: Date,
+    val projectID: Int,
+    val projectName: String,
+    val students: List<User>
+)

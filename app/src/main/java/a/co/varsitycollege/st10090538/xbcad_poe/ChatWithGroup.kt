@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class StudentGroupDiscussion : AppCompatActivity() {
+class ChatWithGroup : AppCompatActivity() {
 
     private lateinit var dbHelper: DBHelper
     private lateinit var groupChatMessages: List<GroupChatMessage>
@@ -19,11 +19,12 @@ class StudentGroupDiscussion : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.student_group_discussion)
+        setContentView(R.layout.chatwithgroup)
+
         dbHelper = DBHelper()
         recyclerView = findViewById(R.id.my_recycler_view)
-        messageInput = findViewById(R.id.editTextText2)
-        sendButton = findViewById(R.id.button2)
+        messageInput = findViewById(R.id.message_input)
+        sendButton = findViewById(R.id.send_button)
 
         val groupId = intent.getIntExtra("groupId", 0)
         groupChatMessages = dbHelper.getGroupMessages(groupId)
@@ -33,6 +34,7 @@ class StudentGroupDiscussion : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences("MyApp", Context.MODE_PRIVATE)
         val senderUserID = sharedPref.getInt("UserID", 0)
+
 
         sendButton.setOnClickListener {
             val messageText = messageInput.text.toString()
