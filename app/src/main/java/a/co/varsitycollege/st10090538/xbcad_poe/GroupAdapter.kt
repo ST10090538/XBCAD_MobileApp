@@ -1,8 +1,6 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
 import Models.Group
-import Models.Project
-import Models.User
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +9,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import java.text.SimpleDateFormat
 
 class GroupAdapter(private val groups: List<Group>) : RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
 

@@ -1,6 +1,5 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
-import Models.StudentGroup
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
@@ -27,14 +26,26 @@ class StudentGroupList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_group_list)
 
-         val groupRecyclerView = findViewById<RecyclerView>(R.id.groupRecyclerView)
+        val groupChat = findViewById<Button>(R.id.btnGroupChat)
+        groupChat.setOnClickListener {
+            val intent = Intent(this, StudentGroupDiscussion::class.java)
+            startActivity(intent)
+        }
+
+        val checkList = findViewById<Button>(R.id.checklistButton)
+        checkList.setOnClickListener {
+            val intent = Intent(this, StudentCheckList::class.java)
+            startActivity(intent)
+        }
+
+        val groupRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewStudentGroups)
         groupRecyclerView.layoutManager = LinearLayoutManager(this)
 
         // Fetch student groups from the database
         Executors.newSingleThreadExecutor().execute {
             dbHelper.getStudentGroups().start()
 
-               val groupList = GlobalData.studentGroupList
+               val groupList = GlobalData.groupList
 
             runOnUiThread {
                 // Create and set the adapter
@@ -97,17 +108,19 @@ class StudentGroupList : AppCompatActivity() {
             dbHelper.getStudentGroups().start()
 
 
-            val groupList = GlobalData.studentGroupList
+            val groupList = GlobalData.groupList
 
             runOnUiThread {
                 // Update the existing adapter with the new group list
                 val groupAdapter = GroupAdapter(groupList)
 
-                val groupRecyclerView = findViewById<RecyclerView>(R.id.groupRecyclerView)
+                val groupRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewStudentGroups)
                 groupRecyclerView.adapter = groupAdapter
             }
         }
+
     }
+
 }
 
 

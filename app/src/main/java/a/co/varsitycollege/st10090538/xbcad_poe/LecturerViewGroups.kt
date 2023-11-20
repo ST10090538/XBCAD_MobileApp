@@ -1,16 +1,11 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
-import Models.Group
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.sql.Date
 
 class LecturerViewGroups : AppCompatActivity() {
 
