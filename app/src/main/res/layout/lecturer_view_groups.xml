@@ -125,7 +125,13 @@
                 android:layout_height="wrap_content">
 
                 <TableRow>
-
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/withoutGroupRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="204dp"
+                        android:scrollbars="vertical"
+                        app:layout_constraintBottom_toTopOf="@+id/imageView6"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
                 </TableRow>
 
             </TableLayout>

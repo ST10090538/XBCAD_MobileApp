@@ -8,27 +8,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class LecturerViewGroups : AppCompatActivity() {
-
     private lateinit var groupAdapter: GroupAdapter
+    private lateinit var withoutGroupAdapter: WithoutGroupAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var withoutGroupRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.lecturer_view_groups)
-
-        findViewById<Button>(R.id.btnAnnouncements).setOnClickListener(){
-            startActivity(Intent(this, LecturerAnnouncements::class.java))
-        }
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
+        withoutGroupRecyclerView = findViewById(R.id.withoutGroupRecyclerView)
+        withoutGroupRecyclerView.layoutManager = LinearLayoutManager(this)
         val dbHelper = DBHelper()
         val thread = dbHelper.getGroups()
         thread.start()
-        thread.join()
-
         groupAdapter = GroupAdapter(GlobalData.groupList)
         recyclerView.adapter = groupAdapter
+        val withoutGroupThread = dbHelper.getStudentsWithoutGroups(GlobalData.studentsWithoutGroupsList)
+        withoutGroupThread.start()
+        withoutGroupThread.join()
+        withoutGroupAdapter = WithoutGroupAdapter(GlobalData.studentsWithoutGroupsList, dbHelper)
+        withoutGroupRecyclerView.adapter = withoutGroupAdapter
     }
 }
