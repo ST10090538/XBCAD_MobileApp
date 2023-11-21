@@ -159,6 +159,8 @@ class DBHelper {
         return projectName
     }
 
+    var getProjectsResult: List<Project> = emptyList()
+
     fun getProjects(): Thread {
         return Thread {
             try {
@@ -170,6 +172,8 @@ class DBHelper {
                     val preparedStatement: PreparedStatement = connection.prepareStatement(query)
                     val resultSet = preparedStatement.executeQuery()
 
+                    val projectsList = mutableListOf<Project>()
+
                     while (resultSet.next()) {
                         val projectID = resultSet.getInt("ProjectID")
                         val projectName = resultSet.getString("ProjectName")
@@ -180,12 +184,15 @@ class DBHelper {
                         val userID = resultSet.getInt("UserID")
 
                         val project = Project(projectID, projectName, npoNeeds, projectStatus, assignedDate, completionDate, userID)
-                        GlobalData.projectsList += project
+                        projectsList.add(project)
                     }
 
                     resultSet.close()
                     preparedStatement.close()
                     connection.close()
+
+                    // Update getProjectsResult with the result
+                    getProjectsResult = projectsList
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

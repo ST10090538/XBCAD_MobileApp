@@ -27,11 +27,14 @@
         <activity android:name=".Register"></activity>
         <activity android:name=".LecturerViewGroups"></activity>
         <activity android:name=".NpoProjectsList"></activity>
+        <activity android:name=".NpoCreateProject"></activity>
+        <activity android:name=".ProjectDescription"></activity>
         <activity android:name=".StudentGroupList"></activity>
         <activity android:name=".StudentGroupDiscussion"></activity>
         <activity android:name=".LecturerAddAnnouncement"></activity>
         <activity android:name=".LecturerAnnouncements"></activity>
         <activity android:name=".MainActivity"></activity>
+
     </application>
 
 </manifest>
