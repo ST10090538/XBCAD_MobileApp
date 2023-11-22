@@ -7,12 +7,13 @@
     android:background="@color/white">
 
 
-      <!-- Add RecyclerView for Student Groups List -->
+    <!-- Add RecyclerView for Student Groups List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewStudentGroups"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView8" />
 
@@ -20,12 +21,12 @@
         android:id="@+id/imageView3"
         android:layout_width="414dp"
         android:layout_height="53dp"
+        android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/_top"
-        android:contentDescription="TODO"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -107,12 +108,12 @@
         android:id="@+id/createGroupButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="137dp"
         android:backgroundTint="@color/lightBlue"
         android:text="New Group"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewStudentGroups" />
 
@@ -137,6 +138,7 @@
         android:layout_marginEnd="218dp"
         android:backgroundTint="@color/lightBlue"
         android:text="Message Lecturer"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -148,8 +150,9 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
-        android:text="Announcements"
         android:backgroundTint="@color/lightBlue"
+        android:text="Announcements"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/messageLecturerBtn"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
