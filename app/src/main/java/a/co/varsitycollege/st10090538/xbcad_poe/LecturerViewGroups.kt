@@ -36,6 +36,10 @@ class LecturerViewGroups : AppCompatActivity() {
             startActivity(Intent(this, AssignProjectActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btnViewProjects).setOnClickListener {
+            startActivity(Intent(this, LecturerViewProjects::class.java))
+        }
+
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -53,10 +57,10 @@ class LecturerViewGroups : AppCompatActivity() {
             }
         })
 
-        dbHelper.getStudentsWithoutGroups(studentsWithoutGroupsList, object : StudentsCallback {
+        dbHelper.getStudentsWithoutGroups(object : StudentsCallback {
             override fun onCallback(studentsWithoutGroups: List<User>) {
                 runOnUiThread {
-                    withoutGroupAdapter = WithoutGroupAdapter(studentsWithoutGroups, dbHelper)
+                    withoutGroupAdapter = WithoutGroupAdapter(studentsWithoutGroups)
                     withoutGroupRecyclerView.adapter = withoutGroupAdapter
                 }
             }

@@ -393,6 +393,38 @@ class DBHelper {
         saveChatMessage(senderUserID, receiverUserID, messageText, java.util.Date())
     }
 
+    fun getMessages(senderUserID: Int, receiverUserID: Int, callback: (List<String>) -> Unit) {
+        Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                val query = "SELECT MessageText FROM ChatMessages WHERE (SenderID = ? AND ReceiverID = ?) OR (SenderID = ? AND ReceiverID = ?)"
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setInt(1, senderUserID)
+                preparedStatement.setInt(2, receiverUserID)
+                preparedStatement.setInt(3, receiverUserID)
+                preparedStatement.setInt(4, senderUserID)
+
+                val resultSet = preparedStatement.executeQuery()
+
+                val messages = mutableListOf<String>()
+                while (resultSet.next()) {
+                    val messageText = resultSet.getString("MessageText")
+                    messages.add(messageText)
+                }
+
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+
+                callback(messages)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Handle exceptions or provide an empty list in case of errors
+                callback(emptyList())
+            }
+        }.start()
+    }
 
     fun getUser(userID: Int): User? {
         var user: User? = null
@@ -594,73 +626,79 @@ class DBHelper {
     fun assignProject(groupID: Int, projectID: Int): Thread {
         return Thread {
             try {
+                Log.d("Database", "Connecting to the database...")
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 GlobalData.connection = DriverManager.getConnection(connectionString)
                 val connection = GlobalData.connection
 
                 if(connection != null)
                 {
+                    Log.d("Database", "Connection successful!")
                     val query =
                         "EXEC AssignProjectToGroup @GroupID = ?, @ProjectID = ?"
                     val preparedStatement: PreparedStatement = connection.prepareStatement(query)
                     preparedStatement.setInt(1, groupID )
                     preparedStatement.setInt(2, projectID )
 
+                    Log.d("Database", "Executing update...")
                     preparedStatement.executeUpdate()
+                    Log.d("Database", "Update executed successfully!")
                     preparedStatement.close()
                     connection.close()
+                    Log.d("Database", "Database connection closed.")
                 }
 
                 true
 
             } catch (e: Exception) {
+                Log.e("Database", "An error occurred: ${e.message}")
                 e.printStackTrace()
                 false
             }catch (ex: SQLException){
+                Log.e("Database", "An SQL exception occurred: ${ex.message}")
                 ex.printStackTrace()
             }
         }
     }
 
-    fun getStudentsWithoutGroups(students: List<User>, callback: StudentsCallback) {
+    fun getStudentsWithoutGroups(callback: StudentsCallback) {
         Thread {
             try {
-                Log.d("DatabaseSW", "Connecting to the database...")
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
-                Log.d("DatabaseSW", "Connection successful!")
 
                 if (connection != null) {
                     val studentsWithoutGroups = mutableListOf<User>()
-                    Log.d("DatabaseSW", "Students list size: ${students.size}")
-                    for (student in students) {
-                        Log.d("DatabaseSW", "Processing student with ID: ${student.userID}")
-                        val query = "SELECT * FROM StudentGroups WHERE StudentID = ?"
-                        val preparedStatement: PreparedStatement = connection.prepareStatement(query)
-                        preparedStatement.setInt(1, student.userID)
-                        val resultSet = preparedStatement.executeQuery()
 
-                        if (!resultSet.next()) {
-                            Log.d("DatabaseSW", "Student ${student.userID} is not in a group")
-                            studentsWithoutGroups.add(student)
-                        } else {
-                            Log.d("DatabaseSW", "Student ${student.userID} is in a group")
-                        }
+                    val query = "SELECT UserID, Username, Email FROM Users WHERE UserType = 1 AND UserID NOT IN (SELECT StudentID FROM StudentGroups)"
 
-                        resultSet.close()
-                        preparedStatement.close()
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val userID = resultSet.getInt("UserID")
+                        val username = resultSet.getString("Username")
+                        val email = resultSet.getString("Email")
+                        val userType = 1
+
+                        val user = User(userID, username, email, userType)
+                        studentsWithoutGroups.add(user)
                     }
+
+                    resultSet.close()
+                    preparedStatement.close()
                     connection.close()
-                    Log.d("DatabaseSW", "Database connection closed.")
-                    Log.d("DatabaseSW", "Students without groups list size: ${studentsWithoutGroups.size}")
+
                     callback.onCallback(studentsWithoutGroups)
                 }
             } catch (e: Exception) {
-                Log.e("DatabaseSW", "An error occurred: ${e.message}")
                 e.printStackTrace()
+                // Handle exceptions or log appropriately
             }
         }.start()
     }
+
+
 
     fun getAllStudents(): List<User> {
         val students = mutableListOf<User>()
