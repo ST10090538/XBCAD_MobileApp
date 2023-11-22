@@ -19,7 +19,9 @@ class WithoutGroupAdapter(private val students: List<User>, private val dbHelper
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val student = students[position]
-        holder.studentName.text = dbHelper.getUsername(student.userID)
+        val username = dbHelper.getUsername(student.userID)
+
+        holder.studentName.text = username
         holder.messageButton.setOnClickListener {
             // Handle button click
             // You can use 'student' variable here to refer to the current student

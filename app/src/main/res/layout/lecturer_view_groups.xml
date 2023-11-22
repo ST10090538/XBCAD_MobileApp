@@ -55,6 +55,17 @@
         app:layout_constraintStart_toEndOf="@+id/AssignGroup"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+    <Button
+        android:id="@+id/btnViewProjects"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/lightBlue"
+        android:text="Announcements"
+        android:textColor="@color/black"
+        app:cornerRadius="0dp"
+        app:layout_constraintStart_toEndOf="@+id/btnAnnouncements"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"/>
+
 
     <ImageView
         android:id="@+id/imageView8"
