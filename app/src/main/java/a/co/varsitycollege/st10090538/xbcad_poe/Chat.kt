@@ -1,6 +1,7 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ class Chat : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.personalchat)
 
+
         val recyclerView: RecyclerView = findViewById(R.id.my_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ChatAdapter(chatList)
@@ -31,7 +33,13 @@ class Chat : AppCompatActivity() {
                 val senderUserID = 1
                 val receiverUserID = 2
                 dbHelper.insertChatMessage(senderUserID, receiverUserID, messageText)
-                chatList.add(ChatItem(dbHelper.getUsername(senderUserID), messageText))
+                chatList.add(
+                    ChatItem(
+                        dbHelper.getUsername(senderUserID),
+                        messageText,
+                        true
+                    )
+                ) // Added 'true' for isSender
                 adapter.notifyDataSetChanged()
                 messageInput.text.clear()
             }
@@ -39,13 +47,14 @@ class Chat : AppCompatActivity() {
 
         val senderUserID = 1
         val receiverUserID = 2
-
+        val studentID = intent.getIntExtra("studentID", -1)
+        Log.d("ChatWithGroup", "Group ID: $studentID")
         dbHelper.getMessages(senderUserID, receiverUserID) { messages ->
             runOnUiThread {
                 chatList.clear()
                 for (message in messages) {
                     val username = dbHelper.getUsername(senderUserID)
-                    chatList.add(ChatItem(username, message))
+                    chatList.add(ChatItem(username, message, false)) // Added 'false' for isSender
                 }
                 adapter.notifyDataSetChanged()
             }

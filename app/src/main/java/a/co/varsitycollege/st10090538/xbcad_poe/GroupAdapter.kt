@@ -2,6 +2,7 @@ package a.co.varsitycollege.st10090538.xbcad_poe
 
 import Models.Group
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,10 @@ class GroupAdapter(private val groups: List<Group>) : RecyclerView.Adapter<Group
 
         holder.chatButton.setOnClickListener {
             val intent = Intent(it.context, ChatWithGroup::class.java)
+            intent.putExtra("groupId", group.groupID)
             it.context.startActivity(intent)
+            Log.d("GroupAdapter", "Group ID: ${group.groupID}")
+
         }
     }
 

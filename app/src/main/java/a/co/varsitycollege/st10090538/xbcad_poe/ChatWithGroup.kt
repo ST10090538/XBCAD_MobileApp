@@ -3,6 +3,7 @@ package a.co.varsitycollege.st10090538.xbcad_poe
 import Models.GroupChatMessage
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,7 @@ class ChatWithGroup : AppCompatActivity() {
 
         val groupId = intent.getIntExtra("groupId", 0)
 
+        Log.d("ChatWithGroup", "Group ID: $groupId")
         dbHelper.getGroupMessages(groupId, object : GroupChatCallback {
             override fun onCallback(messages: List<GroupChatMessage>) {
                 groupChatMessages.clear()

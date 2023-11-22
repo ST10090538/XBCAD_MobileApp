@@ -1,5 +1,6 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +23,17 @@ class ChatAdapter(private val chatList: List<ChatItem>) : RecyclerView.Adapter<C
         val currentItem = chatList[position]
         holder.username.text = currentItem.username
         holder.message.text = currentItem.message
+
+        if (currentItem.isSender) {
+            holder.message.setBackgroundResource(R.drawable.sender_message_background)
+            holder.message.setTextColor(Color.WHITE)
+        } else {
+            holder.message.setBackgroundResource(R.drawable.receiver_message_background)
+            holder.message.setTextColor(Color.BLACK)
+        }
     }
 
     override fun getItemCount() = chatList.size
 }
 
-data class ChatItem(val username: String, val message: String)
+data class ChatItem(val username: String, val message: String, val isSender: Boolean)

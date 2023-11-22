@@ -33,4 +33,5 @@ class GroupChatAdapter(private val groupChatMessages: List<GroupChatMessage>) : 
     }
 
     override fun getItemCount() = groupChatMessages.size
+
 }

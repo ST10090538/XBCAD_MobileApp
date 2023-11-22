@@ -356,6 +356,7 @@ class DBHelper {
 
                         // Use getUsername() to retrieve the username for the userID
                         val username = getUsername(userID)
+                        Log.d("Database", "UserID: $userID, Username: $username")
 
                         val message = GroupChatMessage(id, groupID, userID, username, text, timestamp)
                         groupChatMessages.add(message)

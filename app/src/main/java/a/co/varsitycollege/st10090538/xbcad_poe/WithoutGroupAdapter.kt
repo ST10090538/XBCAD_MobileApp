@@ -25,6 +25,7 @@ class WithoutGroupAdapter(private val students: List<User>) : RecyclerView.Adapt
         holder.studentName.text = student.userName
         holder.messageButton.setOnClickListener {
             val intent = Intent(it.context, Chat::class.java)
+            intent.putExtra("studentID", student.userID)
             it.context.startActivity(intent)
         }
     }
