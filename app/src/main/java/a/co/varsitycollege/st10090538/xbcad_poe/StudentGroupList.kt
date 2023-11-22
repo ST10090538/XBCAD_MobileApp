@@ -43,6 +43,12 @@ class StudentGroupList : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val messageLecturer = findViewById<Button>(R.id.messageLecturerBtn)
+        messageLecturer.setOnClickListener {
+            val intent = Intent(this, Chat ::class.java)
+            startActivity(intent)
+        }
+
         val checkList = findViewById<Button>(R.id.checklistButton)
         checkList.setOnClickListener {
             val intent = Intent(this, StudentCheckList::class.java)
