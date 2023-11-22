@@ -767,4 +767,28 @@ class DBHelper {
         return students
     }
 
+    fun updatePassword(userID: Int, newPassword: String): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+
+                if (connection != null) {
+                    val query = "UPDATE Users SET Password = ? WHERE UserID = ?"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setString(1, newPassword)
+                    preparedStatement.setInt(2, userID)
+
+                    preparedStatement.executeUpdate()
+
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+
 }

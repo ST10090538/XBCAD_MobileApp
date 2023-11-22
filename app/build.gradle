@@ -4,12 +4,14 @@ plugins {
 }
 
 android {
+    packagingOptions { resources.excludes.add("META-INF/*") }
     namespace 'a.co.varsitycollege.st10090538.xbcad_poe'
     compileSdk 33
 
+
     defaultConfig {
         applicationId "a.co.varsitycollege.st10090538.xbcad_poe"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -34,7 +36,9 @@ android {
 
 dependencies {
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+    implementation ('com.azure:azure-storage-blob:12.25.0')
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
