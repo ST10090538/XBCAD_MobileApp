@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 
@@ -17,6 +18,12 @@ class NpoCreateProject : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.npo_create_project)
+
+        val user = findViewById<ImageView>(R.id.createProjectUserIcon)
+        user.setOnClickListener() {
+            val intent = Intent(this, UserProfile::class.java)
+            startActivity(intent)
+        }
 
         // Initialize UI elements
         projectTitleEditText = findViewById(R.id.txtUsernameLogin)

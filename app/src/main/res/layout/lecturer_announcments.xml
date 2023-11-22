@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/announcementHeaderImage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="414dp"
+        android:layout_height="53dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -68,10 +68,22 @@
 
     <ImageView
         android:id="@+id/bottomImage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="411dp"
+        android:layout_height="66dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/_bottom" />
+
+    <ImageView
+        android:id="@+id/announcementsUserIcon"
+        android:layout_width="46dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="-50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/announcementHeaderImage"
+        app:srcCompat="@drawable/user2"
+        tools:srcCompat="@drawable/user2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

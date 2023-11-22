@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -25,6 +26,16 @@ class StudentGroupList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_group_list)
+
+        val toUserProfile = findViewById<ImageView>(R.id.groupListUserIcon)
+        toUserProfile.setOnClickListener() {
+            try {
+                val intent = Intent(applicationContext, UserProfile::class.java)
+                startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
         val groupChat = findViewById<Button>(R.id.btnGroupChat)
         groupChat.setOnClickListener {

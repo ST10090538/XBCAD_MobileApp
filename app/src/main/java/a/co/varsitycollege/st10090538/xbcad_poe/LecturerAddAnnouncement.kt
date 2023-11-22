@@ -1,9 +1,11 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.Date
@@ -18,6 +20,12 @@ class LecturerAddAnnouncement : AppCompatActivity() {
         val submitButton: Button = findViewById(R.id.button4)
         val titleInput: EditText = findViewById(R.id.txtUsernameLogin)
         val contentInput: EditText = findViewById(R.id.editText2)
+        val user: ImageView = findViewById(R.id.addAnnouncmentUserIcon)
+
+        user.setOnClickListener() {
+            val intent = Intent(this, UserProfile::class.java)
+            startActivity(intent)
+        }
 
         submitButton.setOnClickListener {
             val title = titleInput.text.toString()

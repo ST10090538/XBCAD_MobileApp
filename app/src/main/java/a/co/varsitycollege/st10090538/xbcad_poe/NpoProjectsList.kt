@@ -4,6 +4,7 @@ import Models.Project
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,12 @@ class NpoProjectsList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.npo_projects_list)
+
+        val user = findViewById<ImageView>(R.id.projectListUserIcon)
+        user.setOnClickListener() {
+            val intent = Intent(this, UserProfile::class.java)
+            startActivity(intent)
+        }
 
         // Assuming that DBHelper is properly initialized
         val linearLayout = findViewById<LinearLayout>(R.id.LinearLayoutId1)

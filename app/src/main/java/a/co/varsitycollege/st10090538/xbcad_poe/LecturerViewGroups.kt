@@ -6,6 +6,7 @@ import a.co.varsitycollege.st10090538.xbcad_poe.GlobalData.studentsWithoutGroups
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,12 @@ class LecturerViewGroups : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lecturer_view_groups)
+
+        val user = findViewById<ImageView>(R.id.viewGroupsUserIcon)
+        user.setOnClickListener() {
+            val intent = Intent(this, UserProfile::class.java)
+            startActivity(intent)
+        }
 
         findViewById<Button>(R.id.btnAnnouncements).setOnClickListener(){
             startActivity(Intent(this, LecturerAnnouncements::class.java))
