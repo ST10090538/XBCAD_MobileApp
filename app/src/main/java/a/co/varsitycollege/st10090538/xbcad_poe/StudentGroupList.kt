@@ -27,6 +27,7 @@ class StudentGroupList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_group_list)
 
+
         val toUserProfile = findViewById<ImageView>(R.id.groupListUserIcon)
         toUserProfile.setOnClickListener() {
             try {
@@ -53,6 +54,11 @@ class StudentGroupList : AppCompatActivity() {
         checkList.setOnClickListener {
             val intent = Intent(this, StudentCheckList::class.java)
             startActivity(intent)
+
+            val dbhelper = dbHelper.getGroups()
+            dbhelper.start()
+            dbhelper.join()
+            val groups = GlobalData.groupList
         }
 
         val groupRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewStudentGroups)
