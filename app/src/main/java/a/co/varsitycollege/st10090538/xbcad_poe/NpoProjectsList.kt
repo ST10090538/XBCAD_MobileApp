@@ -74,6 +74,10 @@ class NpoProjectsList : AppCompatActivity() {
         val intent = Intent(this, ProjectDescription::class.java)
         intent.putExtra("PROJECT_NAME", project.projectName)
         intent.putExtra("PROJECT_DESCRIPTION", project.npoNeedsDescription)
+        intent.putExtra("PROJECT_STATUS", project.projectStatus)
+        intent.putExtra("PROJECT_ASSIGNED_DATE", project.assignedDate?.time ?: 0) // Assuming assignedDate is a Date object
+        intent.putExtra("PROJECT_COMPLETION_DATE", project.completionDate?.time ?: 0) // Assuming completionDate is a Date object
+        intent.putExtra("PROJECT_USER_ID", project.userID)
         startActivity(intent)
     }
 

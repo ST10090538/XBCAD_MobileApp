@@ -42,6 +42,33 @@
                 android:textSize="18sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/textViewProjectStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Project Status"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+            <TextView
+                android:id="@+id/textViewProjectAssignedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Project Assigned Date"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+            <TextView
+                android:id="@+id/textViewProjectCompletionDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Project Completion Date"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+
+
         </LinearLayout>
 
     </ScrollView>
