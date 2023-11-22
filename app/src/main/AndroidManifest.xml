@@ -9,9 +9,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/wil_logo"
+        android:label="Wil Connect"
+        android:roundIcon="@mipmap/wil_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.XBCAD_POE"
         tools:targetApi="31">
@@ -31,14 +31,14 @@
         <activity android:name=".StudentGroupDiscussion"></activity>
         <activity android:name=".LecturerAddAnnouncement"></activity>
         <activity android:name=".LecturerAnnouncements"></activity>
-        <activity android:name=".LecturerViewGroups">
-        </activity>
+        <activity android:name=".LecturerViewGroups"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".ChatWithGroup"></activity>
         <activity android:name=".UserProfile"></activity>
         <activity android:name=".ChangePassword"></activity>
         <activity android:name=".Register"></activity>
         <activity android:name=".AssignProjectActivity"></activity>
+        <activity android:name=".StudentCheckList"></activity>
 
     </application>
 
