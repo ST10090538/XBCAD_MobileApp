@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 class StudentGroupDiscussion : AppCompatActivity() {
 
     private lateinit var dbHelper: DBHelper
-    private lateinit var groupChatMessages: List<GroupChatMessage>
+    private var groupChatMessages: MutableList<GroupChatMessage> = mutableListOf()
     private lateinit var recyclerView: RecyclerView
     private lateinit var messageInput: EditText
     private lateinit var sendButton: Button
@@ -22,19 +22,13 @@ class StudentGroupDiscussion : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_group_discussion)
 
-        val groupList = findViewById<Button>(R.id.groupListButton)
-        groupList.setOnClickListener {
-            val intent = Intent(this, StudentGroupList::class.java)
-            startActivity(intent)
+        findViewById<Button>(R.id.groupListButton).setOnClickListener {
+            startActivity(Intent(this, StudentGroupList::class.java))
         }
 
-        val checkList = findViewById<Button>(R.id.checklistButton)
-        checkList.setOnClickListener {
-            val intent = Intent(this, StudentCheckList::class.java)
-            startActivity(intent)
+        findViewById<Button>(R.id.checklistButton).setOnClickListener {
+            startActivity(Intent(this, StudentCheckList::class.java))
         }
-
-
 
         dbHelper = DBHelper()
         recyclerView = findViewById(R.id.my_recycler_view)
@@ -42,7 +36,16 @@ class StudentGroupDiscussion : AppCompatActivity() {
         sendButton = findViewById(R.id.button2)
 
         val groupId = intent.getIntExtra("groupId", 0)
-        groupChatMessages = dbHelper.getGroupMessages(groupId)
+
+        dbHelper.getGroupMessages(groupId, object : GroupChatCallback {
+            override fun onCallback(messages: List<GroupChatMessage>) {
+                groupChatMessages.clear()
+                groupChatMessages.addAll(messages)
+                runOnUiThread {
+                    (recyclerView.adapter as GroupChatAdapter).notifyDataSetChanged()
+                }
+            }
+        })
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = GroupChatAdapter(groupChatMessages)
@@ -55,13 +58,17 @@ class StudentGroupDiscussion : AppCompatActivity() {
             if (messageText.isNotEmpty()) {
                 dbHelper.saveGroupMessage(groupId, senderUserID, messageText, java.util.Date())
                 messageInput.text.clear()
-                updateMessages(groupId)
+                dbHelper.getGroupMessages(groupId, object : GroupChatCallback {
+                    override fun onCallback(messages: List<GroupChatMessage>) {
+                        groupChatMessages.clear()
+                        groupChatMessages.addAll(messages)
+                        runOnUiThread {
+                            (recyclerView.adapter as GroupChatAdapter).notifyDataSetChanged()
+                            recyclerView.scrollToPosition(groupChatMessages.size - 1) // Scroll to the bottom to show the latest message
+                        }
+                    }
+                })
             }
         }
-    }
-
-    private fun updateMessages(groupId: Int) {
-        groupChatMessages = dbHelper.getGroupMessages(groupId)
-        (recyclerView.adapter as GroupChatAdapter).notifyDataSetChanged()
     }
 }

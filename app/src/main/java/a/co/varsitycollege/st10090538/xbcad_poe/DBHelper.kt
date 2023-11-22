@@ -88,19 +88,21 @@ class DBHelper {
         }
     }
 
-    fun getGroups(): Thread {
-        return Thread {
+    fun getGroups(callback: GroupsCallback): List<Group> {
+        val groups = mutableListOf<Group>()
+        Thread {
             try {
-                Log.d("DBHelper", "Attempting to connect to database...")
+                Log.d("Database", "Connecting to the database...")
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
+                Log.d("Database", "Connection successful!")
 
                 if (connection != null) {
-                    Log.d("DBHelper", "Connected to database successfully.")
                     val query = "SELECT GroupID, GroupName, CreationDate, ProjectID FROM Groups"
                     val preparedStatement: PreparedStatement = connection.prepareStatement(query)
                     val resultSet = preparedStatement.executeQuery()
 
+                    Log.d("Database", "Query executed, processing results...")
                     while (resultSet.next()) {
                         val groupID = resultSet.getInt("GroupID")
                         val groupName = resultSet.getString("GroupName")
@@ -112,22 +114,23 @@ class DBHelper {
                         val students = getStudentsByGroupId(groupID)
 
                         val group = Group(groupID, groupName, creationDate, projectID, projectName, students)
-                        GlobalData.groupList += group
+                        groups.add(group)
+                        Log.d("Database", "Added group with ID: $groupID")
+                        callback.onCallback(groups)
                     }
-
-                    Log.d("DBHelper", "Retrieved ${GlobalData.groupList.size} groups from database.")
 
                     resultSet.close()
                     preparedStatement.close()
                     connection.close()
-                } else {
-                    Log.d("DBHelper", "Failed to connect to database.")
+                    Log.d("Database", "Database connection closed.")
                 }
             } catch (e: Exception) {
-                Log.e("DBHelper", "An error occurred: ${e.message}", e)
+                Log.e("Database", "An error occurred: ${e.message}")
                 e.printStackTrace()
             }
-        }
+        }.start()
+
+        return groups
     }
 
 
@@ -267,44 +270,50 @@ class DBHelper {
         return announcements
     }
 
-    fun getGroupMessages(groupID: Int): List<GroupChatMessage> {
+    fun getGroupMessages(groupID: Int, callback: GroupChatCallback): List<GroupChatMessage> {
         val groupChatMessages = mutableListOf<GroupChatMessage>()
+        Thread {
+            try {
+                Log.d("Database", "Connecting to the database...")
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                Log.d("Database", "Connection successful!")
 
-        try {
-            Log.d("getGroupMessages", "Attempting to get group messages for group ID: $groupID")
-            Class.forName("net.sourceforge.jtds.jdbc.Driver")
-            val connection = DriverManager.getConnection(connectionString)
+                if (connection != null) {
+                    val query = "SELECT ID, UserID, MessageText, Timestamp FROM GroupChatMessages WHERE GroupID = $groupID"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
 
-            if (connection != null) {
-                Log.d("getGroupMessages", "Successfully established connection")
-                val query = "SELECT ID, UserID, MessageText, Timestamp FROM GroupChatMessages WHERE GroupID = $groupID"
-                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
-                val resultSet = preparedStatement.executeQuery()
+                    Log.d("Database", "Query executed, processing results...")
+                    while (resultSet.next()) {
+                        val id = resultSet.getInt("ID")
+                        val userID = resultSet.getInt("UserID")
+                        val text = resultSet.getString("MessageText")
+                        val timestamp = resultSet.getTimestamp("Timestamp")
 
-                while (resultSet.next()) {
-                    val id = resultSet.getInt("ID")
-                    val userID = resultSet.getInt("UserID")
-                    val text = resultSet.getString("MessageText")
-                    val timestamp = resultSet.getTimestamp("Timestamp")
+                        // Use getUsername() to retrieve the username for the userID
+                        val username = getUsername(userID)
 
-                    // Use getUsername() to retrieve the username for the userID
-                    val username = getUsername(userID)
+                        val message = GroupChatMessage(id, groupID, userID, username, text, timestamp)
+                        groupChatMessages.add(message)
+                        Log.d("Database", "Added group chat message with ID: $id")
+                        callback.onCallback(groupChatMessages)
+                    }
 
-                    val message = GroupChatMessage(id, groupID, userID, username, text, timestamp)
-                    groupChatMessages.add(message)
+                    resultSet.close()
+                    preparedStatement.close()
+                    connection.close()
+                    Log.d("Database", "Database connection closed.")
                 }
-                Log.d("getGroupMessages", "Retrieved ${groupChatMessages.size} messages")
-                resultSet.close()
-                preparedStatement.close()
-                connection.close()
+            } catch (e: Exception) {
+                Log.e("Database", "An error occurred: ${e.message}")
+                e.printStackTrace()
             }
-        } catch (e: Exception) {
-            Log.e("getGroupMessages", "Error occurred: ${e.message}")
-            e.printStackTrace()
-        }
+        }.start()
 
         return groupChatMessages
     }
+
 
     fun saveGroupMessage(groupID: Int, senderUserID: Int, messageText: String, timestamp: java.util.Date) {
         Thread {
@@ -585,11 +594,14 @@ class DBHelper {
         }
     }
 
-    fun getStudentsWithoutGroups(students: List<User>): Thread {
-        return Thread {
+    fun getStudentsWithoutGroups(students: List<User>, callback: StudentsCallback): List<User> {
+        val studentsWithoutGroups = mutableListOf<User>()
+        Thread {
             try {
+                Log.d("DatabaseSW", "Connecting to the database...")
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
+                Log.d("Database", "Connection successful!")
 
                 if (connection != null) {
                     for (student in students) {
@@ -599,19 +611,30 @@ class DBHelper {
                         val resultSet = preparedStatement.executeQuery()
 
                         if (!resultSet.next()) {
-                            GlobalData.studentsWithoutGroupsList.add(student)
+                            Log.d("DatabaseSW", "Student ${student.userID} is not in a group")
+                            studentsWithoutGroups.add(student)
+                            callback.onCallback(studentsWithoutGroups)
+                        } else {
+                            Log.d("Database", "Student ${student.userID} is in a group")
                         }
 
                         resultSet.close()
                         preparedStatement.close()
                     }
                     connection.close()
+                    Log.d("Database", "Database connection closed.")
                 }
             } catch (e: Exception) {
+                Log.e("Database", "An error occurred: ${e.message}")
                 e.printStackTrace()
             }
-        }
+        }.start()
+
+        return studentsWithoutGroups
     }
+
+
+
 
     fun getAllStudents(): List<User> {
         val students = mutableListOf<User>()

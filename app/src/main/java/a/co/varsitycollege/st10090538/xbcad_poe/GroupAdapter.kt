@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
 
 class GroupAdapter(private val groups: List<Group>) : RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
 
@@ -28,8 +29,11 @@ class GroupAdapter(private val groups: List<Group>) : RecyclerView.Adapter<Group
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val group = groups[position]
         holder.groupName.text = group.groupName
-        holder.creationDate.text = group.creationDate.toString()
+        holder.creationDate.text = SimpleDateFormat("dd/MM/yyyy").format(group.creationDate)
         holder.projectName.text = group.projectName
+
+        // Clear the studentList to prevent duplicate views when the ViewHolder is recycled
+        holder.studentList.removeAllViews()
 
         // Add TextViews to the studentList for each student in the group
         for (student in group.students) {
@@ -42,7 +46,6 @@ class GroupAdapter(private val groups: List<Group>) : RecyclerView.Adapter<Group
             val intent = Intent(it.context, ChatWithGroup::class.java)
             it.context.startActivity(intent)
         }
-
     }
 
     override fun getItemCount() = groups.size

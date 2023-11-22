@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 class ChatWithGroup : AppCompatActivity() {
 
     private lateinit var dbHelper: DBHelper
-    private lateinit var groupChatMessages: List<GroupChatMessage>
+    private var groupChatMessages: MutableList<GroupChatMessage> = mutableListOf()
     private lateinit var recyclerView: RecyclerView
     private lateinit var messageInput: EditText
     private lateinit var sendButton: Button
@@ -27,7 +27,16 @@ class ChatWithGroup : AppCompatActivity() {
         sendButton = findViewById(R.id.send_button)
 
         val groupId = intent.getIntExtra("groupId", 0)
-        groupChatMessages = dbHelper.getGroupMessages(groupId)
+
+        dbHelper.getGroupMessages(groupId, object : GroupChatCallback {
+            override fun onCallback(messages: List<GroupChatMessage>) {
+                groupChatMessages.clear()
+                groupChatMessages.addAll(messages)
+                runOnUiThread {
+                    (recyclerView.adapter as GroupChatAdapter).notifyDataSetChanged()
+                }
+            }
+        })
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = GroupChatAdapter(groupChatMessages)
@@ -35,19 +44,22 @@ class ChatWithGroup : AppCompatActivity() {
         val sharedPref = getSharedPreferences("MyApp", Context.MODE_PRIVATE)
         val senderUserID = sharedPref.getInt("UserID", 0)
 
-
         sendButton.setOnClickListener {
             val messageText = messageInput.text.toString()
             if (messageText.isNotEmpty()) {
                 dbHelper.saveGroupMessage(groupId, senderUserID, messageText, java.util.Date())
                 messageInput.text.clear()
-                updateMessages(groupId)
+                dbHelper.getGroupMessages(groupId, object : GroupChatCallback {
+                    override fun onCallback(messages: List<GroupChatMessage>) {
+                        groupChatMessages.clear()
+                        groupChatMessages.addAll(messages)
+                        runOnUiThread {
+                            (recyclerView.adapter as GroupChatAdapter).notifyDataSetChanged()
+                            recyclerView.scrollToPosition(groupChatMessages.size - 1) // Scroll to the bottom to show the latest message
+                        }
+                    }
+                })
             }
         }
-    }
-
-    private fun updateMessages(groupId: Int) {
-        groupChatMessages = dbHelper.getGroupMessages(groupId)
-        (recyclerView.adapter as GroupChatAdapter).notifyDataSetChanged()
     }
 }

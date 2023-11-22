@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.sql.Date
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 class GroupChatAdapter(private val groupChatMessages: List<GroupChatMessage>) : RecyclerView.Adapter<GroupChatAdapter.ViewHolder>() {
 
@@ -25,7 +27,9 @@ class GroupChatAdapter(private val groupChatMessages: List<GroupChatMessage>) : 
         val message = groupChatMessages[position]
         holder.username.text = message.username
         holder.messageText.text = message.messageText
-        holder.timestamp.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(message.timestamp)
+        // Format the timestamp to a more readable format
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        holder.timestamp.text = sdf.format(message.timestamp)
     }
 
     override fun getItemCount() = groupChatMessages.size

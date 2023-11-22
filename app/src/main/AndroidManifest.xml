@@ -16,7 +16,11 @@
         android:theme="@style/Theme.XBCAD_POE"
         tools:targetApi="31">
         <activity
-            android:name=".Welcome"
+            android:name=".Welcome">
+
+        </activity>
+        <activity android:name=".Register"></activity>
+        <activity android:name=".LecturerViewGroups"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"></activity>
-        <activity android:name=".LecturerViewGroups"></activity>
         <activity android:name=".NpoProjectsList"></activity>
         <activity android:name=".NpoCreateProject"></activity>
         <activity android:name=".ProjectDescription"></activity>
@@ -34,6 +36,7 @@
         <activity android:name=".LecturerAddAnnouncement"></activity>
         <activity android:name=".LecturerAnnouncements"></activity>
         <activity android:name=".MainActivity"></activity>
+        <activity android:name=".ChatWithGroup"></activity>
 
     </application>
 
