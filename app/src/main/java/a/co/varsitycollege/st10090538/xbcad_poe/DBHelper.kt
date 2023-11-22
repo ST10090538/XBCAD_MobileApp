@@ -393,6 +393,38 @@ class DBHelper {
         saveChatMessage(senderUserID, receiverUserID, messageText, java.util.Date())
     }
 
+    fun getMessages(senderUserID: Int, receiverUserID: Int, callback: (List<String>) -> Unit) {
+        Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                val query = "SELECT MessageText FROM ChatMessages WHERE (SenderID = ? AND ReceiverID = ?) OR (SenderID = ? AND ReceiverID = ?)"
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setInt(1, senderUserID)
+                preparedStatement.setInt(2, receiverUserID)
+                preparedStatement.setInt(3, receiverUserID)
+                preparedStatement.setInt(4, senderUserID)
+
+                val resultSet = preparedStatement.executeQuery()
+
+                val messages = mutableListOf<String>()
+                while (resultSet.next()) {
+                    val messageText = resultSet.getString("MessageText")
+                    messages.add(messageText)
+                }
+
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+
+                callback(messages)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Handle exceptions or provide an empty list in case of errors
+                callback(emptyList())
+            }
+        }.start()
+    }
 
     fun getUser(userID: Int): User? {
         var user: User? = null

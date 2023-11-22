@@ -60,7 +60,7 @@ class LecturerViewGroups : AppCompatActivity() {
         dbHelper.getStudentsWithoutGroups(object : StudentsCallback {
             override fun onCallback(studentsWithoutGroups: List<User>) {
                 runOnUiThread {
-                    withoutGroupAdapter = WithoutGroupAdapter(studentsWithoutGroups, dbHelper)
+                    withoutGroupAdapter = WithoutGroupAdapter(studentsWithoutGroups)
                     withoutGroupRecyclerView.adapter = withoutGroupAdapter
                 }
             }

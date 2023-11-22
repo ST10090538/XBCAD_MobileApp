@@ -1,12 +1,15 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 import Models.User
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-class WithoutGroupAdapter(private val students: List<User>, private val dbHelper: DBHelper) : RecyclerView.Adapter<WithoutGroupAdapter.ViewHolder>() {
+class WithoutGroupAdapter(private val students: List<User>) : RecyclerView.Adapter<WithoutGroupAdapter.ViewHolder>() {
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val studentName: TextView = itemView.findViewById(R.id.studentName)
         val messageButton: Button = itemView.findViewById(R.id.messageButton)
@@ -19,12 +22,10 @@ class WithoutGroupAdapter(private val students: List<User>, private val dbHelper
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val student = students[position]
-        val username = dbHelper.getUsername(student.userID)
-
-        holder.studentName.text = username
+        holder.studentName.text = student.userName
         holder.messageButton.setOnClickListener {
-            // Handle button click
-            // You can use 'student' variable here to refer to the current student
+            val intent = Intent(it.context, Chat::class.java)
+            it.context.startActivity(intent)
         }
     }
 

@@ -23,6 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+
         </activity>
         <activity android:name=".NpoProjectsList"></activity>
         <activity android:name=".NpoCreateProject"></activity>
@@ -41,6 +42,7 @@
         <activity android:name=".AssignProjectActivity"></activity>
         <activity android:name=".StudentCheckList"></activity>
         <activity android:name=".LecturerViewProjects"></activity>
+        <activity android:name=".Chat"></activity>
 
     </application>
 
