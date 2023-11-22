@@ -7,6 +7,6 @@ class Group(
     val groupName: String,
     val creationDate: Date,
     val projectID: Int,
-    val projectName: String,
-    val students: List<User>
+    val projectName: String?,
+    val students: List<User>?
 )

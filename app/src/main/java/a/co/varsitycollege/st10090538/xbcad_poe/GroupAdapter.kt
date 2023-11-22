@@ -36,7 +36,7 @@ class GroupAdapter(private val groups: List<Group>) : RecyclerView.Adapter<Group
         holder.studentList.removeAllViews()
 
         // Add TextViews to the studentList for each student in the group
-        for (student in group.students) {
+        for (student in group.students!!) {
             val textView = TextView(holder.itemView.context)
             textView.text = student.userName
             holder.studentList.addView(textView)
