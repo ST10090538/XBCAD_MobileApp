@@ -37,6 +37,7 @@
         <activity android:name=".ChatWithGroup"></activity>
         <activity android:name=".UserProfile"></activity>
         <activity android:name=".ChangePassword"></activity>
+        <activity android:name=".Register"></activity>
         <activity android:name=".AssignProjectActivity"></activity>
 
     </application>
