@@ -32,6 +32,10 @@ class LecturerViewGroups : AppCompatActivity() {
             startActivity(Intent(this, LecturerAnnouncements::class.java))
         }
 
+        findViewById<Button>(R.id.AssignGroup).setOnClickListener {
+            startActivity(Intent(this, AssignProjectActivity::class.java))
+        }
+
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 

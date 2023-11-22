@@ -133,6 +133,34 @@ class DBHelper {
         return groups
     }
 
+    fun getGroupName(groupID: Int): String {
+        var groupName = ""
+
+        try {
+            Class.forName("net.sourceforge.jtds.jdbc.Driver")
+            val connection = DriverManager.getConnection(connectionString)
+
+            if (connection != null) {
+                val query = "SELECT GroupName FROM Groups WHERE GroupID = ?"
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setInt(1, groupID)
+                val resultSet = preparedStatement.executeQuery()
+
+                if (resultSet.next()) {
+                    groupName = resultSet.getString("GroupName")
+                }
+
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return groupName
+    }
+
 
     fun getProjectName(projectID: Int): String {
         var projectName = ""
@@ -594,17 +622,19 @@ class DBHelper {
         }
     }
 
-    fun getStudentsWithoutGroups(students: List<User>, callback: StudentsCallback): List<User> {
-        val studentsWithoutGroups = mutableListOf<User>()
+    fun getStudentsWithoutGroups(students: List<User>, callback: StudentsCallback) {
         Thread {
             try {
                 Log.d("DatabaseSW", "Connecting to the database...")
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
-                Log.d("Database", "Connection successful!")
+                Log.d("DatabaseSW", "Connection successful!")
 
                 if (connection != null) {
+                    val studentsWithoutGroups = mutableListOf<User>()
+                    Log.d("DatabaseSW", "Students list size: ${students.size}")
                     for (student in students) {
+                        Log.d("DatabaseSW", "Processing student with ID: ${student.userID}")
                         val query = "SELECT * FROM StudentGroups WHERE StudentID = ?"
                         val preparedStatement: PreparedStatement = connection.prepareStatement(query)
                         preparedStatement.setInt(1, student.userID)
@@ -613,28 +643,24 @@ class DBHelper {
                         if (!resultSet.next()) {
                             Log.d("DatabaseSW", "Student ${student.userID} is not in a group")
                             studentsWithoutGroups.add(student)
-                            callback.onCallback(studentsWithoutGroups)
                         } else {
-                            Log.d("Database", "Student ${student.userID} is in a group")
+                            Log.d("DatabaseSW", "Student ${student.userID} is in a group")
                         }
 
                         resultSet.close()
                         preparedStatement.close()
                     }
                     connection.close()
-                    Log.d("Database", "Database connection closed.")
+                    Log.d("DatabaseSW", "Database connection closed.")
+                    Log.d("DatabaseSW", "Students without groups list size: ${studentsWithoutGroups.size}")
+                    callback.onCallback(studentsWithoutGroups)
                 }
             } catch (e: Exception) {
-                Log.e("Database", "An error occurred: ${e.message}")
+                Log.e("DatabaseSW", "An error occurred: ${e.message}")
                 e.printStackTrace()
             }
         }.start()
-
-        return studentsWithoutGroups
     }
-
-
-
 
     fun getAllStudents(): List<User> {
         val students = mutableListOf<User>()

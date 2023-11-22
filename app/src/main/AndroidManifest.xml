@@ -22,6 +22,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".NpoProjectsList"></activity>
         <activity android:name=".NpoCreateProject"></activity>
@@ -30,10 +31,13 @@
         <activity android:name=".StudentGroupDiscussion"></activity>
         <activity android:name=".LecturerAddAnnouncement"></activity>
         <activity android:name=".LecturerAnnouncements"></activity>
+        <activity android:name=".LecturerViewGroups">
+        </activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".ChatWithGroup"></activity>
         <activity android:name=".UserProfile"></activity>
         <activity android:name=".ChangePassword"></activity>
+        <activity android:name=".AssignProjectActivity"></activity>
 
     </application>
 

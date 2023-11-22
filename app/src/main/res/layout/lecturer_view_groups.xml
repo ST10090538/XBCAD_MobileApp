@@ -31,12 +31,12 @@
 
 
     <Button
-        android:id="@+id/groupViewButton"
+        android:id="@+id/AssignGroup"
         android:layout_width="130dp"
         android:layout_height="60dp"
         android:layout_marginStart="5dp"
         android:backgroundTint="@color/lightGreen"
-        android:text="Group View"
+        android:text="Assign Project"
         android:textColor="@color/black"
         app:cornerRadius="0dp"
         app:layout_constraintEnd_toStartOf="@+id/btnGroupChat"
@@ -52,7 +52,7 @@
         android:text="Announcements"
         android:textColor="@color/black"
         app:cornerRadius="0dp"
-        app:layout_constraintStart_toEndOf="@+id/groupViewButton"
+        app:layout_constraintStart_toEndOf="@+id/AssignGroup"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 
