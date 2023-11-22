@@ -2,12 +2,14 @@ package a.co.varsitycollege.st10090538.xbcad_poe
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-
 
 class Register : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,5 +59,37 @@ class Register : AppCompatActivity() {
             dbHelper.join()
             startActivity(Intent(this, MainActivity::class.java))
         }
+
+        // Set up the Spinner with black text and white dropdown background
+        val userTypeSpinner = findViewById<Spinner>(R.id.spnRole)
+        val userTypeArray = resources.getStringArray(R.array.roles_array)
+
+        val adapter = object : ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_item,
+            userTypeArray
+        ) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val textView = view.findViewById<TextView>(android.R.id.text1)
+                textView.setTextColor(resources.getColor(R.color.black))
+                return view
+            }
+
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val textView = view.findViewById<TextView>(android.R.id.text1)
+                textView.setTextColor(resources.getColor(R.color.black))
+                view.setBackgroundColor(resources.getColor(R.color.white)) // Set your desired background color
+                return view
+            }
+        }
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        userTypeSpinner.adapter = adapter
     }
 }

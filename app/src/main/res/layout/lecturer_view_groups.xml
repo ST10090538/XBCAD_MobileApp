@@ -34,58 +34,63 @@
         android:id="@+id/AssignGroup"
         android:layout_width="130dp"
         android:layout_height="60dp"
-        android:layout_marginStart="5dp"
         android:backgroundTint="@color/lightGreen"
         android:text="Assign Project"
         android:textColor="@color/black"
+        android:textSize="11sp"
         app:cornerRadius="0dp"
-        app:layout_constraintEnd_toStartOf="@+id/btnGroupChat"
+        app:layout_constraintEnd_toStartOf="@+id/btnAnnouncements"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView8"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
         android:id="@+id/btnAnnouncements"
-        android:layout_width="160dp"
+        android:layout_width="130dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/lightBlue"
         android:text="Announcements"
         android:textColor="@color/black"
+        android:textSize="11sp"
         app:cornerRadius="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnViewProjects"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/AssignGroup"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+
     <Button
         android:id="@+id/btnViewProjects"
-        android:layout_width="160dp"
+        android:layout_width="130dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/lightBlue"
-        android:text="Announcements"
+        android:text="Projects"
         android:textColor="@color/black"
+        android:textSize="11sp"
         app:cornerRadius="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView8"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnAnnouncements"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="290dp"
+        android:layout_width="390dp"
         android:layout_height="27dp"
-        android:layout_marginStart="5dp"
         android:layout_marginTop="-12dp"
-        android:layout_marginEnd="116dp"
         android:src="@drawable/_tabline1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnAnnouncements" />
 
     <ScrollView
         android:id="@+id/scrollView4"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        android:layout_width="match_parent"
-        android:layout_height="480dp"
         tools:layout_editor_absoluteX="-10dp"
         tools:layout_editor_absoluteY="240dp">
 
@@ -98,44 +103,31 @@
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="View Groups"
                 android:layout_marginBottom="30dp"
-                android:textSize="30sp"/>
+                android:textColor="@color/black"
+                android:text="View Groups"
+                android:textAlignment="center"
+                android:textSize="30sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="204dp"
                 android:scrollbars="vertical"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/imageView6"
                 app:layout_constraintTop_toBottomOf="@+id/imageView8" />
-
-            <TableLayout
-                android:id="@+id/groupTable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TableRow>
-
-                </TableRow>
-
-            </TableLayout>
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:layout_marginBottom="30dp"
+                android:textColor="@color/black"
                 android:text="Students Without Group"
-                android:textSize="30sp"
-                android:layout_marginBottom="30dp"/>
+                android:textAlignment="center"
+                android:textSize="30sp" />
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TableRow>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/withoutGroupRecyclerView"
                         android:layout_width="match_parent"
@@ -143,20 +135,18 @@
                         android:scrollbars="vertical"
                         app:layout_constraintBottom_toTopOf="@+id/imageView6"
                         app:layout_constraintTop_toBottomOf="@+id/imageView8" />
-                </TableRow>
 
-            </TableLayout>
         </LinearLayout>
     </ScrollView>
 
     <ImageView
         android:id="@+id/imageView6"
+        android:layout_width="410dp"
+        android:layout_height="46dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/_bottom"
-        android:layout_width="410dp"
-        android:layout_height="46dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="455dp" />
 
