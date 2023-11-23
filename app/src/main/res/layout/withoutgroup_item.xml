@@ -10,10 +10,13 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="16sp"
+        android:textColor="@color/black"
         android:textStyle="bold" />
     <Button
         android:id="@+id/messageButton"
         android:layout_width="wrap_content"
+        android:backgroundTint="@color/lightBlue"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:text="Message Student" />
 </LinearLayout>

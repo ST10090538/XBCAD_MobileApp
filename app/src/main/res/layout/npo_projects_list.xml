@@ -51,6 +51,7 @@
         android:backgroundTint="@color/lightBlue"
         android:text="Add Project"
         app:cornerRadius="5dp"
+        android:textColor="@color/white"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="parent"

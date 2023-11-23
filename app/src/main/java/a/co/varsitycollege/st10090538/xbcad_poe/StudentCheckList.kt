@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import java.util.Date
 
 class StudentCheckList : AppCompatActivity() {
@@ -97,7 +98,6 @@ class StudentCheckList : AppCompatActivity() {
          milestoneEditText.text.clear()*/
     }
     private fun displayMilestone(title: String, text: String, date: Date) {
-
         // Create a TextView to display the milestone
         val milestoneTextView = TextView(this)
 
@@ -105,14 +105,17 @@ class StudentCheckList : AppCompatActivity() {
         val formattedText = "Title: $title\n$text\nDate: $date"
         milestoneTextView.text = formattedText
 
+        // Set text color to black
+        milestoneTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
+
         // Add the TextView to the milestoneContainer
-        //findViewById<LinearLayout>(R.id.milestoneContainer).addView(milestoneTextView)
         val container = findViewById<LinearLayout>(R.id.milestoneContainer)
         container.addView(milestoneTextView)
 
         // Log statement to check if TextView is added
         Log.d("MilestoneAdded", "Milestone added: $formattedText")
     }
+
     /*
     // Create a TextView to display the milestone
     val milestoneTextView = TextView(this)

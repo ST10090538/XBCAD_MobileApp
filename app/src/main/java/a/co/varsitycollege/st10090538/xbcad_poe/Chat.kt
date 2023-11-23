@@ -23,6 +23,7 @@ class Chat : AppCompatActivity() {
         adapter = ChatAdapter(chatList)
         recyclerView.adapter = adapter
 
+
         val messageInput: EditText = findViewById(R.id.message_input)
         val sendButton: Button = findViewById(R.id.send_button)
 

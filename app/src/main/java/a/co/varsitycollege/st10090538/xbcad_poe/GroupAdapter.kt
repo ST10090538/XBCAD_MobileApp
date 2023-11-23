@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 
@@ -41,6 +42,9 @@ class GroupAdapter(private val groups: List<Group>) : RecyclerView.Adapter<Group
             val textView = TextView(holder.itemView.context)
             textView.text = student.userName
             holder.studentList.addView(textView)
+
+            // Set text color to black
+            textView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
         }
 
         holder.chatButton.setOnClickListener {
@@ -48,9 +52,9 @@ class GroupAdapter(private val groups: List<Group>) : RecyclerView.Adapter<Group
             intent.putExtra("groupId", group.groupID)
             it.context.startActivity(intent)
             Log.d("GroupAdapter", "Group ID: ${group.groupID}")
-
         }
     }
+
 
     override fun getItemCount() = groups.size
 }

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ProjectDescription">
+    tools:context=".ProjectDescription"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -17,8 +18,11 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/buttonBack">
+        android:layout_height="466dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/buttonBack"
+        android:layout_below="@+id/imageView3"
+        android:layout_marginTop="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,46 +31,54 @@
 
             <TextView
                 android:id="@+id/textViewProjectName"
-                android:layout_width="wrap_content"
+                android:layout_width="380dp"
                 android:layout_height="wrap_content"
-                android:text="Project Name"
-                android:textSize="24sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"/>
+                android:layout_marginTop="50dp"
+                android:text="Project Name"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/textViewProjectDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="380dp"
                 android:layout_height="wrap_content"
-                android:text="Project Description"
-                android:textSize="18sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:text="Project Description"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textViewProjectStatus"
-                android:layout_width="wrap_content"
+                android:layout_width="380dp"
                 android:layout_height="wrap_content"
-                android:text="Project Status"
-                android:textSize="18sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:text="Project Status"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/textViewProjectAssignedDate"
-                android:layout_width="wrap_content"
+                android:layout_width="380dp"
                 android:layout_height="wrap_content"
-                android:text="Project Assigned Date"
-                android:textSize="18sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:text="Project Assigned Date"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/textViewProjectCompletionDate"
-                android:layout_width="wrap_content"
+                android:layout_width="380dp"
                 android:layout_height="wrap_content"
-                android:text="Project Completion Date"
-                android:textSize="18sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:text="Project Completion Date"
+                android:textSize="18sp" />
 
 
         </LinearLayout>
@@ -78,6 +90,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back to Projects List"
+        android:backgroundTint="@color/lightBlue"
+        android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/imageView6"
         android:layout_marginTop="5dp" />
@@ -92,14 +106,14 @@
 
     <ImageView
         android:id="@+id/userIcon"
-        android:layout_width="46dp"
-        android:layout_height="47dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/imageView3"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="-53dp"
-        android:layout_marginEnd="65dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="-50dp"
+        android:layout_marginEnd="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"

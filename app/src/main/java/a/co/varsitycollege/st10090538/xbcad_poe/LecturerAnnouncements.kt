@@ -3,19 +3,12 @@ package a.co.varsitycollege.st10090538.xbcad_poe
 import Models.Announcement
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class LecturerAnnouncements : AppCompatActivity() {
 
