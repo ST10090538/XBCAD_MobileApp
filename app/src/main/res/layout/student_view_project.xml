@@ -17,10 +17,10 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="466dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="405dp"
+        android:layout_height="612dp"
         android:layout_below="@+id/imageView3"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp">
 
         <LinearLayout
@@ -33,12 +33,13 @@
                 android:id="@+id/textViewProjectName"
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:text="Project Name"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="270dp"
+                android:text="Loading..."
+                android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="60sp" />
 
 
         </LinearLayout>
