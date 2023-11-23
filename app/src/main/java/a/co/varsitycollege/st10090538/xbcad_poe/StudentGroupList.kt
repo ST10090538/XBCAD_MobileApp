@@ -27,6 +27,11 @@ class StudentGroupList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_group_list)
 
+        val announcement = findViewById<Button>(R.id.announcementsBtn)
+        announcement.setOnClickListener() {
+            val intent = Intent(this, StudentViewAnnouncements::class.java)
+            startActivity(intent)
+        }
 
         val toUserProfile = findViewById<ImageView>(R.id.groupListUserIcon)
         toUserProfile.setOnClickListener() {
@@ -44,9 +49,9 @@ class StudentGroupList : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val messageLecturer = findViewById<Button>(R.id.messageLecturerBtn)
-        messageLecturer.setOnClickListener {
-            val intent = Intent(this, Chat ::class.java)
+        val chooseLecturer = findViewById<Button>(R.id.messageLecturerBtn)
+        chooseLecturer.setOnClickListener {
+            val intent = Intent(this, ChooseLecturer ::class.java)
             startActivity(intent)
         }
 

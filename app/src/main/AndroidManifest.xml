@@ -40,8 +40,7 @@
         <activity android:name=".StudentGroupDiscussion"></activity>
         <activity android:name=".LecturerAddAnnouncement"></activity>
         <activity android:name=".LecturerAnnouncements"></activity>
-        <activity android:name=".LecturerViewGroups">
-        </activity>
+        <activity android:name=".LecturerViewGroups"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".ChatWithGroup"></activity>
         <activity android:name=".UserProfile"></activity>
@@ -52,6 +51,7 @@
         <activity android:name=".LecturerViewProjects"></activity>
         <activity android:name=".Chat"></activity>
         <activity android:name=".StudentViewAnnouncements"></activity>
+        <activity android:name=".ChooseLecturer"></activity>
 
     </application>
 

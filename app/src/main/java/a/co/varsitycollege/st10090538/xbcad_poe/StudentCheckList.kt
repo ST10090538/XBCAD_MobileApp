@@ -29,6 +29,13 @@ class StudentCheckList : AppCompatActivity() {
             val intent = Intent(this, StudentViewAnnouncements::class.java)
             startActivity(intent)
         }
+
+        val chooseLecturer = findViewById<Button>(R.id.messageLecturerBtn)
+        chooseLecturer.setOnClickListener {
+            val intent = Intent(this, ChooseLecturer ::class.java)
+            startActivity(intent)
+        }
+
         val user = findViewById<ImageView>(R.id.checklistUserIcon)
         user.setOnClickListener() {
             val intent = Intent(this, UserProfile::class.java)

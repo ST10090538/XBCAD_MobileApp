@@ -23,9 +23,22 @@ class StudentGroupDiscussion : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_group_discussion)
 
+
+        val announcement = findViewById<Button>(R.id.announcementsBtn)
+        announcement.setOnClickListener() {
+            val intent = Intent(this, StudentViewAnnouncements::class.java)
+            startActivity(intent)
+        }
+
         val user = findViewById<ImageView>(R.id.groupDiscussionUserIcon)
         user.setOnClickListener() {
             val intent = Intent(this, UserProfile::class.java)
+            startActivity(intent)
+        }
+
+        val chooseLecturer = findViewById<Button>(R.id.messageLecturerBtn)
+        chooseLecturer.setOnClickListener {
+            val intent = Intent(this, ChooseLecturer ::class.java)
             startActivity(intent)
         }
 
