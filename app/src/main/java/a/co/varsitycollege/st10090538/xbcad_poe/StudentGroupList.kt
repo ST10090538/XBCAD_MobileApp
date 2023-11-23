@@ -1,5 +1,6 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
+import Models.Group
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
@@ -20,12 +21,19 @@ import java.util.concurrent.Executors
 class StudentGroupList : AppCompatActivity() {
 
     private val dbHelper = DBHelper()
+    private lateinit var groupAdapter: GroupAdapter
+    private lateinit var recyclerView: RecyclerView
     
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_group_list)
+        recyclerView = findViewById(R.id.recyclerViewStudentGroups)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        refreshGroupList()
+
 
         val announcement = findViewById<Button>(R.id.announcementsBtn)
         announcement.setOnClickListener() {
@@ -69,18 +77,7 @@ class StudentGroupList : AppCompatActivity() {
         val groupRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewStudentGroups)
         groupRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Fetch student groups from the database
-        Executors.newSingleThreadExecutor().execute {
-            dbHelper.getStudentGroups().start()
 
-               val groupList = GlobalData.groupList
-
-            runOnUiThread {
-                // Create and set the adapter
-                val groupAdapter = GroupAdapter(groupList)
-                groupRecyclerView.adapter = groupAdapter
-            }
-        }
         val createGroupButton = findViewById<Button>(R.id.createGroupButton)
         createGroupButton.setOnClickListener {
             // Show a dialog to get the group name
@@ -131,22 +128,16 @@ class StudentGroupList : AppCompatActivity() {
     }
 
     private fun refreshGroupList() {
-        // Fetch student groups from the database
-        Executors.newSingleThreadExecutor().execute {
-            dbHelper.getStudentGroups().start()
+        val dbHelper = DBHelper()
 
-
-            val groupList = GlobalData.groupList
-
-            runOnUiThread {
-                // Update the existing adapter with the new group list
-                val groupAdapter = GroupAdapter(groupList)
-
-                val groupRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewStudentGroups)
-                groupRecyclerView.adapter = groupAdapter
+        dbHelper.getGroups(object : GroupsCallback {
+            override fun onCallback(groups: List<Group>) {
+                runOnUiThread {
+                    groupAdapter = GroupAdapter(groups)
+                    recyclerView.adapter = groupAdapter
+                }
             }
-        }
-
+        })
     }
 
 }
