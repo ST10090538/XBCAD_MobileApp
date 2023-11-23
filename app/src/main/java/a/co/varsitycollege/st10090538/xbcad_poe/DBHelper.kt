@@ -589,7 +589,7 @@ class DBHelper {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addGroup(groupName: String, callback: (Boolean) -> Unit): Thread {
+    fun addGroup(groupName: String): Thread {
         return Thread {
             try {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")

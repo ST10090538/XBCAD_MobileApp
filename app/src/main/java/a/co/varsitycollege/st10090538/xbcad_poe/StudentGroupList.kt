@@ -5,6 +5,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -23,7 +26,6 @@ import java.util.concurrent.Executors
 class StudentGroupList : AppCompatActivity() {
 
     private val dbHelper = DBHelper()
-    private lateinit var groupAdapter: GroupAdapter
     private lateinit var recyclerView: RecyclerView
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,7 +36,12 @@ class StudentGroupList : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewStudentGroups)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val helper = DBHelper().getStudentGroups()
+        helper.start()
+        helper.join()
+
         refreshGroupList()
+        checkJoinedGroup()
 
 
         val announcement = findViewById<Button>(R.id.announcementsBtn)
@@ -71,6 +78,7 @@ class StudentGroupList : AppCompatActivity() {
             startActivity(intent)
 
             val dbhelper = dbHelper.getGroups()
+            GlobalData.groupList = emptyList()
             dbhelper.start()
             dbhelper.join()
             val groups = GlobalData.groupList
@@ -82,13 +90,11 @@ class StudentGroupList : AppCompatActivity() {
 
         val createGroupButton = findViewById<Button>(R.id.createGroupButton)
         createGroupButton.setOnClickListener {
-            // Show a dialog to get the group name
             showGroupNameInputDialog()
         }
 
         val joinGroupButton = findViewById<Button>(R.id.joinGroupButton)
         joinGroupButton.setOnClickListener {
-            // Show a dialog to get the group name
             showJoinGroupInputDialog()
         }
 
@@ -98,34 +104,31 @@ class StudentGroupList : AppCompatActivity() {
     private fun showGroupNameInputDialog() {
         val inputGroupName = EditText(this)
 
-        // Create the AlertDialog with custom style
         val dialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
             .setTitle("Enter Group Name")
             .setView(inputGroupName)
             .setPositiveButton("Create") { _, _ ->
                 val groupName = inputGroupName.text.toString()
+                val helper = DBHelper().addGroup(groupName)
+                helper.start()
+                helper.join()
+                refreshGroupList()
 
-                // Call the method to add the new group to the database
-                addNewGroupToDatabase(groupName)
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
             }
             .create()
 
-        // Set background color for the input EditText
         inputGroupName.setBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
 
-        // Set text color for the input EditText
         inputGroupName.setTextColor(ContextCompat.getColor(this, android.R.color.black))
 
-
-        // Show the dialog
         dialog.show()
 
         val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-        // Set the color for the positive button
+
         positiveButton.setTextColor(
             ContextCompat.getColor(
                 this,
@@ -133,7 +136,6 @@ class StudentGroupList : AppCompatActivity() {
             )
         )
 
-        // Set the color for the negative button
         negativeButton.setTextColor(
             ContextCompat.getColor(
                 this,
@@ -142,48 +144,50 @@ class StudentGroupList : AppCompatActivity() {
         )
     }
 
-
-     @RequiresApi(Build.VERSION_CODES.O)
-    private fun addNewGroupToDatabase(groupName: String) {
-        Executors.newSingleThreadExecutor().execute {
-            dbHelper.addGroup(groupName) { success ->
-
-                runOnUiThread {
-                    if (success) {
-                        // Refresh the group list after adding the new group
-                        refreshGroupList()
-                    } else {
-                        Toast.makeText(this, "Failed to create a new group", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                }
-
-            }
-        }
-    }
-
     private fun refreshGroupList() {
-        val dbHelper = DBHelper()
+        val dbHelper = DBHelper().getGroups()
+        GlobalData.groupList = emptyList()
+        dbHelper.start()
+        dbHelper.join()
 
-        dbHelper.getGroups(object : GroupsCallback {
-            override fun onCallback(groups: List<Group>) {
-                runOnUiThread {
-                    groupAdapter = GroupAdapter(groups)
-                    recyclerView.adapter = groupAdapter
-                }
-            }
-        })
+        var groups = GlobalData.groupList!!
+        //Add to recycle view here, groups is in groups variable above
+
     }
 
     private fun showJoinGroupInputDialog(){
+        val groups = GlobalData.groupList
+        val studentGroups = GlobalData.studentGroupList
+
+        val groupCounts = studentGroups.groupBy { it.groupID }.mapValues { it.value.size }
+        val filteredGroups = groups.filter { group -> groupCounts[group.groupID] ?: 0 <= 1 }
+
+        val groupNames = filteredGroups.map { it.groupName }
+        var Gid: Int? = null
+
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, groupNames)
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
         val joinGroup = Spinner(this)
+        joinGroup.adapter = adapter
+
+        joinGroup.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedGroupId = filteredGroups[position].groupID
+                Gid = selectedGroupId
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
         val dialog = AlertDialog.Builder(this)
             .setTitle("Join Group")
             .setView(joinGroup)
             .setPositiveButton("Join") { _, _ ->
-
-                //addStudentToGroupInDatabase()
+                addStudentToGroupInDatabase(Gid!!)
+                checkJoinedGroup()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
@@ -194,7 +198,7 @@ class StudentGroupList : AppCompatActivity() {
 
         val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-        // Set the color for the positive button
+
         positiveButton.setTextColor(
             ContextCompat.getColor(
                 this,
@@ -202,7 +206,7 @@ class StudentGroupList : AppCompatActivity() {
             )
         )
 
-        // Set the color for the negative button
+
         negativeButton.setTextColor(
             ContextCompat.getColor(
                 this,
@@ -211,7 +215,39 @@ class StudentGroupList : AppCompatActivity() {
         )
     }
 
-    private fun addStudentToGroupInDatabase(){
+    private fun addStudentToGroupInDatabase(groupID: Int){
+        val helper = DBHelper().enrollStudentInGroup(groupID, GlobalData.loggedInUser!!.userID)
+        helper.start()
+        helper.join()
+
+        var groupName: String? = null
+
+        for (group in GlobalData.groupList) {
+            if (group.groupID == groupID) {
+                groupName = group.groupName
+                break
+            }
+        }
+        Toast.makeText(this, "Joined ${groupName!!}", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun checkJoinedGroup(){
+        var joinButton = findViewById<Button>(R.id.joinGroupButton)
+        val helper = DBHelper().getStudentGroups()
+        GlobalData.studentGroupList = emptyList()
+        helper.start()
+        helper.join()
+
+        val studentIdToCheck = GlobalData.loggedInUser!!.userID
+
+        val isStudentIdFound = GlobalData.studentGroupList?.any { it.studentID == studentIdToCheck } ?: false
+
+        if (isStudentIdFound) {
+            joinButton.visibility = View.INVISIBLE
+        } else {
+            joinButton.visibility = View.VISIBLE
+        }
+
 
     }
 
