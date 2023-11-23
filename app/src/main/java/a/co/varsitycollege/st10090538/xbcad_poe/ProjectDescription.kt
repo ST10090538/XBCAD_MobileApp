@@ -1,7 +1,9 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.sql.Date
@@ -59,6 +61,12 @@ class ProjectDescription : AppCompatActivity() {
         val backButton = findViewById<Button>(R.id.buttonBack)
         backButton.setOnClickListener {
             finish() // Close the current activity and go back to the previous one (NpoProjectsList)
+        }
+
+        val user = findViewById<ImageView>(R.id.userIcon)
+        user.setOnClickListener {
+            val intent = Intent(this, UserProfile::class.java)
+            startActivity(intent)
         }
     }
 }
