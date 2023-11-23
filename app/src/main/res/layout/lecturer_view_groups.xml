@@ -164,6 +164,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Assign Project"
+        android:backgroundTint="@color/lightBlue"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

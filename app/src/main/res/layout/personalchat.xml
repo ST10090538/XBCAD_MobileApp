@@ -30,7 +30,7 @@
         android:layout_below="@+id/top"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="Chat With Student"
+        android:text="Chat Room"
         android:textColor="@color/black"
         android:textSize="40sp" />
 
