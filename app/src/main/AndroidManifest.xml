@@ -51,6 +51,7 @@
         <activity android:name=".StudentCheckList"></activity>
         <activity android:name=".LecturerViewProjects"></activity>
         <activity android:name=".Chat"></activity>
+        <activity android:name=".StudentViewAnnouncements"></activity>
 
     </application>
 
