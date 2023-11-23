@@ -8,10 +8,12 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.util.concurrent.Executors
@@ -23,7 +25,7 @@ class StudentGroupList : AppCompatActivity() {
     private val dbHelper = DBHelper()
     private lateinit var groupAdapter: GroupAdapter
     private lateinit var recyclerView: RecyclerView
-    
+
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +61,7 @@ class StudentGroupList : AppCompatActivity() {
 
         val chooseLecturer = findViewById<Button>(R.id.messageLecturerBtn)
         chooseLecturer.setOnClickListener {
-            val intent = Intent(this, ChooseLecturer ::class.java)
+            val intent = Intent(this, ChooseLecturer::class.java)
             startActivity(intent)
         }
 
@@ -84,13 +86,20 @@ class StudentGroupList : AppCompatActivity() {
             showGroupNameInputDialog()
         }
 
+        val joinGroupButton = findViewById<Button>(R.id.joinGroupButton)
+        joinGroupButton.setOnClickListener {
+            // Show a dialog to get the group name
+            showJoinGroupInputDialog()
+        }
+
     }
 
-@RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showGroupNameInputDialog() {
-
         val inputGroupName = EditText(this)
-        val dialog = AlertDialog.Builder(this)
+
+        // Create the AlertDialog with custom style
+        val dialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
             .setTitle("Enter Group Name")
             .setView(inputGroupName)
             .setPositiveButton("Create") { _, _ ->
@@ -104,8 +113,35 @@ class StudentGroupList : AppCompatActivity() {
             }
             .create()
 
+        // Set background color for the input EditText
+        inputGroupName.setBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
+
+        // Set text color for the input EditText
+        inputGroupName.setTextColor(ContextCompat.getColor(this, android.R.color.black))
+
+
+        // Show the dialog
         dialog.show()
+
+        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        // Set the color for the positive button
+        positiveButton.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.lightBlue
+            )
+        )
+
+        // Set the color for the negative button
+        negativeButton.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.lightBlue
+            )
+        )
     }
+
 
      @RequiresApi(Build.VERSION_CODES.O)
     private fun addNewGroupToDatabase(groupName: String) {
@@ -138,6 +174,45 @@ class StudentGroupList : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun showJoinGroupInputDialog(){
+        val joinGroup = Spinner(this)
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Join Group")
+            .setView(joinGroup)
+            .setPositiveButton("Join") { _, _ ->
+
+                //addStudentToGroupInDatabase()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+            .create()
+
+        dialog.show()
+
+        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        // Set the color for the positive button
+        positiveButton.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.lightBlue
+            )
+        )
+
+        // Set the color for the negative button
+        negativeButton.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.lightBlue
+            )
+        )
+    }
+
+    private fun addStudentToGroupInDatabase(){
+
     }
 
 }

@@ -19,7 +19,7 @@
         android:id="@+id/announcementTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="announcements"
+        android:text="Announcements"
         android:textColor="@color/black"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,10 +27,66 @@
         app:layout_constraintTop_toBottomOf="@+id/announcementHeaderImage" />
 
     <Button
+        android:id="@+id/AssignGroup"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/lightBlue"
+        android:text="Assign Project"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnAnnouncements"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView8"
+        app:layout_constraintTop_toBottomOf="@+id/announcementTitleText" />
+
+    <Button
+        android:id="@+id/btnAnnouncements"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/lightGreen"
+        android:text="Announcements"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnViewProjects"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/AssignGroup"
+        app:layout_constraintTop_toBottomOf="@+id/announcementTitleText" />
+
+
+    <Button
+        android:id="@+id/btnViewProjects"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/lightBlue"
+        android:text="Projects"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:cornerRadius="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView8"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnAnnouncements"
+        app:layout_constraintTop_toBottomOf="@+id/announcementTitleText" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="390dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="-12dp"
+        android:src="@drawable/_tabline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAnnouncements" />
+
+
+    <Button
         android:id="@+id/addAnnouncementButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/lightBlue"
+        android:textColor="@color/white"
         android:text="Add Announcements"
         app:cornerRadius="5dp"
         android:textSize="20sp"
@@ -41,13 +97,12 @@
 
     <ScrollView
         android:id="@+id/announcementScrollView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/announcementTitleText"
-        app:layout_constraintBottom_toTopOf="@+id/addAnnouncementButton">
+        app:layout_constraintTop_toBottomOf="@+id/imageView8">
 
         <LinearLayout
             android:id="@+id/announcementContainer"
@@ -60,8 +115,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical" />
-
-
         </LinearLayout>
     </ScrollView>
 
