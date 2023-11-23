@@ -23,7 +23,7 @@ import java.util.concurrent.Executors
 
 
 
-class StudentGroupList : AppCompatActivity() {
+class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
 
     private val dbHelper = DBHelper()
     private lateinit var recyclerView: RecyclerView
@@ -35,10 +35,6 @@ class StudentGroupList : AppCompatActivity() {
         setContentView(R.layout.student_group_list)
         recyclerView = findViewById(R.id.recyclerViewStudentGroups)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        val helper = DBHelper().getStudentGroups()
-        helper.start()
-        helper.join()
 
         refreshGroupList()
         checkJoinedGroup()
@@ -145,14 +141,18 @@ class StudentGroupList : AppCompatActivity() {
     }
 
     private fun refreshGroupList() {
-        val dbHelper = DBHelper().getGroups()
-        GlobalData.groupList = emptyList()
-        dbHelper.start()
-        dbHelper.join()
+        val dbHelper = DBHelper()
+        dbHelper.getGroups(object : DBHelper.OnGroupsLoadedCallback {
+            override fun onGroupsLoaded(groups: List<Group>) {
+                // This method is called when groups are loaded
 
-        var groups = GlobalData.groupList!!
-        //Add to recycle view here, groups is in groups variable above
-
+                // Update the RecyclerView with the loaded groups
+                runOnUiThread {
+                    val adapter = GroupsAdapter(groups)
+                    recyclerView.adapter = adapter
+                }
+            }
+        }).start()
     }
 
     private fun showJoinGroupInputDialog(){
@@ -249,6 +249,10 @@ class StudentGroupList : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onGroupsLoaded(groups: List<Group>) {
+        TODO("Not yet implemented")
     }
 
 }

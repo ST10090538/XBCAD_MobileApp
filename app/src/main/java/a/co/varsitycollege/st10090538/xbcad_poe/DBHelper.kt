@@ -168,6 +168,49 @@ class DBHelper {
         }
     }
 
+    interface OnGroupsLoadedCallback {
+        fun onGroupsLoaded(groups: List<Group>)
+    }
+
+    fun getGroups(callback: OnGroupsLoadedCallback): Thread {
+        return Thread {
+            try {
+                Log.d("Database", "Connecting to the database...")
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                Log.d("Database", "Connection successful!")
+
+                if (connection != null) {
+                    val query = "SELECT GroupID, GroupName, CreationDate, ProjectID FROM Groups"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
+
+                    val loadedGroups = mutableListOf<Group>()
+
+                    while (resultSet.next()) {
+                        val groupID = resultSet.getInt("GroupID")
+                        val groupName = resultSet.getString("GroupName")
+                        val creationDate = resultSet.getDate("CreationDate")
+                        val projectID = resultSet.getString("ProjectID").toInt()
+
+                        val group = Group(groupID, groupName, creationDate, projectID, null, null)
+                        loadedGroups.add(group)
+                    }
+
+                    resultSet.close()
+                    preparedStatement.close()
+                    connection.close()
+
+                    // Notify the callback with the loaded groups
+                    callback.onGroupsLoaded(loadedGroups)
+                }
+            } catch (e: Exception) {
+                Log.e("Database", "An error occurred: ${e.message}")
+                e.printStackTrace()
+            }
+        }
+    }
+
     fun getGroupName(groupID: Int): String {
         var groupName = ""
 
