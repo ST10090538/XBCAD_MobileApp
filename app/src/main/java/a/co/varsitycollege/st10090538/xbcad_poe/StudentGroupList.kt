@@ -144,9 +144,6 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
         val dbHelper = DBHelper()
         dbHelper.getGroups(object : DBHelper.OnGroupsLoadedCallback {
             override fun onGroupsLoaded(groups: List<Group>) {
-                // This method is called when groups are loaded
-
-                // Update the RecyclerView with the loaded groups
                 runOnUiThread {
                     val adapter = GroupsAdapter(groups)
                     recyclerView.adapter = adapter
@@ -157,6 +154,9 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
 
     private fun showJoinGroupInputDialog(){
         val groups = GlobalData.groupList
+        val helper = DBHelper().getStudentGroups()
+        helper.start()
+        helper.join()
         val studentGroups = GlobalData.studentGroupList
 
         val groupCounts = studentGroups.groupBy { it.groupID }.mapValues { it.value.size }

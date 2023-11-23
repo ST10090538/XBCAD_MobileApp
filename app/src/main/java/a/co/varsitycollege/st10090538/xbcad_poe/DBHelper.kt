@@ -194,6 +194,7 @@ class DBHelper {
                         val projectID = resultSet.getString("ProjectID").toInt()
 
                         val group = Group(groupID, groupName, creationDate, projectID, null, null)
+                        GlobalData.groupList += group
                         loadedGroups.add(group)
                     }
 
