@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -52,32 +53,7 @@ class StudentViewProject: AppCompatActivity() {
             // Update UI on the main thread
             withContext(Dispatchers.Main) {
                 if (project != null) {
-                    val projectTextView = TextView(this@StudentViewProject)
-
-                    // Set text and appearance
-                    projectTextView.text = project.projectName
-                    projectTextView.textSize = 20f
-                    projectTextView.setTextColor(ContextCompat.getColor(this@StudentViewProject, R.color.black))
-                    projectTextView.setTypeface(null, Typeface.BOLD) // Set text to bold
-
-                    // Set layout parameters
-                    val layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-
-                    // Set the new TextView below the existing one
-                    layoutParams.topMargin = 16 // Adjust the margin as needed
-
-                    projectTextView.layoutParams = layoutParams
-
-                    // Set click listener
-                    projectTextView.setOnClickListener {
-                        showProjectDescription(project)
-                    }
-
-                    // Add TextView to LinearLayout
-                    linearLayout.addView(projectTextView)
+                    showProjectDescription(project)
                 }
             }
 
