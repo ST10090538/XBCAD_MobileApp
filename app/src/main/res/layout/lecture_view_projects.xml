@@ -25,7 +25,7 @@
         android:id="@+id/announcementTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lecturer Dahsboard"
+        android:text="Lecturer Dashboard"
         android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
