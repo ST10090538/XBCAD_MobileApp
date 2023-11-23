@@ -36,7 +36,6 @@ class AssignProjectActivity : AppCompatActivity() {
             val selectedGroupName = groupSpinner.selectedItem as String
             val selectedProjectName = projectSpinner.selectedItem as String
 
-
             val selectedGroupId = groupNameToIdMap[selectedGroupName]
             val selectedProjectId = projectNameToIdMap[selectedProjectName]
 
@@ -51,6 +50,7 @@ class AssignProjectActivity : AppCompatActivity() {
     }
 
     private fun populateSpinners() {
+        // Populate project spinner
         val projectsThread = dbHelper.getProjects()
         projectsThread.start()
         projectsThread.join()
@@ -63,6 +63,7 @@ class AssignProjectActivity : AppCompatActivity() {
         val projectAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, projectNames)
         projectSpinner.adapter = projectAdapter
 
+        // Populate group spinner in a separate thread
         Thread {
             dbHelper.getGroups(object : GroupsCallback {
                 override fun onCallback(groups: List<Group>) {
@@ -70,7 +71,6 @@ class AssignProjectActivity : AppCompatActivity() {
                         groupNameToIdMap[it.groupName] = it.groupID
                     }
                     val groupNames = groupNameToIdMap.keys.toList()
-
 
                     runOnUiThread {
                         val groupAdapter = ArrayAdapter(
@@ -85,5 +85,3 @@ class AssignProjectActivity : AppCompatActivity() {
         }.start()
     }
 }
-
-

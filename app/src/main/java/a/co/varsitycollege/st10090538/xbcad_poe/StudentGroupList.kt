@@ -157,6 +157,7 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
 
     private fun showJoinGroupInputDialog(){
         val groups = GlobalData.groupList
+        checkJoinedGroup()
         val studentGroups = GlobalData.studentGroupList
 
         val groupCounts = studentGroups.groupBy { it.groupID }.mapValues { it.value.size }

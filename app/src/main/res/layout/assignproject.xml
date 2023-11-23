@@ -2,7 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:src="@drawable/_top" />
+
+    <TextView
+        android:id="@+id/announcementTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+
+        android:layout_marginTop="10dp"
+        android:text="Chat With Group"
+        android:textColor="@color/black"
+        android:textSize="40sp" />
 
     <Spinner
         android:id="@+id/groupID_spinner"
@@ -20,8 +41,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Assign"
+        android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/lightBlue"
         android:textColor="@color/white"
         android:layout_marginTop="16dp" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="430dp"
+        android:src="@drawable/_bottom" />
 </LinearLayout>
