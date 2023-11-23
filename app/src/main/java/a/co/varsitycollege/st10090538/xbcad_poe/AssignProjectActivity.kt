@@ -2,10 +2,12 @@ package a.co.varsitycollege.st10090538.xbcad_poe
 
 import Models.Group
 import Models.Project
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class AssignProjectActivity : AppCompatActivity() {
@@ -40,8 +42,10 @@ class AssignProjectActivity : AppCompatActivity() {
 
             if (selectedGroupId != null && selectedProjectId != null) {
                 dbHelper.assignProject(selectedGroupId, selectedProjectId).start()
+                val intent = Intent(this, LecturerViewGroups::class.java)
+                startActivity(intent)
             } else {
-                // Handle the case where the ID lookup fails
+                Toast.makeText(this, "Please Select a Group and a Project", Toast.LENGTH_SHORT).show()
             }
         }
     }

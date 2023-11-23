@@ -28,6 +28,11 @@ class LecturerViewGroups : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val assign = findViewById<Button>(R.id.assignButton)
+        assign.setOnClickListener() {
+            val intent = Intent(this, AssignProjectActivity::class.java)
+            startActivity(intent)
+        }
         findViewById<Button>(R.id.btnAnnouncements).setOnClickListener(){
             startActivity(Intent(this, LecturerAnnouncements::class.java))
         }
