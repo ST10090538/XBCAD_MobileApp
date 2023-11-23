@@ -4,6 +4,7 @@ import Models.GroupChatMessage
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -57,6 +58,7 @@ class StudentGroupDiscussion : AppCompatActivity() {
 
         val groupId = intent.getIntExtra("groupId", 0)
 
+        Log.d("ChatWithGroup", "Group ID: $groupId")
         dbHelper.getGroupMessages(groupId, object : GroupChatCallback {
             override fun onCallback(messages: List<GroupChatMessage>) {
                 groupChatMessages.clear()

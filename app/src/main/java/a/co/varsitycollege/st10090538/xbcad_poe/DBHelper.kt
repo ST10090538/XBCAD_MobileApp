@@ -429,17 +429,19 @@ class DBHelper {
         saveChatMessage(senderUserID, receiverUserID, messageText, java.util.Date())
     }
 
-    fun getMessages(senderUserID: Int, receiverUserID: Int, callback: (List<String>) -> Unit) {
+    fun getMessages(senderUserID: Int, receiverUserID: Int, studentID: Int, lecturerID: Int, callback: (List<String>) -> Unit) {
         Thread {
             try {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver")
                 val connection = DriverManager.getConnection(connectionString)
-                val query = "SELECT MessageText FROM ChatMessages WHERE (SenderID = ? AND ReceiverID = ?) OR (SenderID = ? AND ReceiverID = ?)"
+                val query = "SELECT MessageText FROM ChatMessages WHERE ((SenderID = ? AND ReceiverID = ?) OR (SenderID = ? AND ReceiverID = ?)) AND StudentID = ? AND LecturerID = ?"
                 val preparedStatement: PreparedStatement = connection.prepareStatement(query)
                 preparedStatement.setInt(1, senderUserID)
                 preparedStatement.setInt(2, receiverUserID)
                 preparedStatement.setInt(3, receiverUserID)
                 preparedStatement.setInt(4, senderUserID)
+                preparedStatement.setInt(5, studentID)
+                preparedStatement.setInt(6, lecturerID)
 
                 val resultSet = preparedStatement.executeQuery()
 
@@ -494,6 +496,37 @@ class DBHelper {
 
         return user
     }
+
+    fun getLecturers(callback: LecturersCallback) {
+        Thread {
+            val lecturers = mutableListOf<Lecturer>()
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                val query = "SELECT UserID, Username FROM Users WHERE UserType = 0"
+
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+
+                val resultSet = preparedStatement.executeQuery()
+
+                while (resultSet.next()) {
+                    val id = resultSet.getInt("UserID")
+                    val name = resultSet.getString("Username")
+
+                    val lecturer = Lecturer(id, name)
+                    lecturers.add(lecturer)
+                }
+
+                resultSet.close()
+                preparedStatement.close()
+                connection.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            callback.onCallback(lecturers)
+        }.start()
+    }
+
 
     fun getUsername(userID: Int): String {
         var username = ""

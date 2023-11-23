@@ -18,7 +18,6 @@ class Chat : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.personalchat)
 
-
         val recyclerView: RecyclerView = findViewById(R.id.my_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ChatAdapter(chatList)
@@ -27,15 +26,16 @@ class Chat : AppCompatActivity() {
         val messageInput: EditText = findViewById(R.id.message_input)
         val sendButton: Button = findViewById(R.id.send_button)
 
+        val studentID = intent.getIntExtra("studentID", -1)
+        val lecturerID = intent.getIntExtra("lecturerID", -1)
+
         sendButton.setOnClickListener {
             val messageText = messageInput.text.toString()
             if (messageText.isNotEmpty()) {
-                val senderUserID = 1
-                val receiverUserID = 2
-                dbHelper.insertChatMessage(senderUserID, receiverUserID, messageText)
+                dbHelper.insertChatMessage(studentID, lecturerID, messageText)
                 chatList.add(
                     ChatItem(
-                        dbHelper.getUsername(senderUserID),
+                        dbHelper.getUsername(studentID),
                         messageText,
                         true
                     )
@@ -45,19 +45,18 @@ class Chat : AppCompatActivity() {
             }
         }
 
-        val senderUserID = 1
-        val receiverUserID = 2
-        val studentID = intent.getIntExtra("studentID", -1)
-        Log.d("ChatWithGroup", "Group ID: $studentID")
-        dbHelper.getMessages(senderUserID, receiverUserID) { messages ->
+        Log.d("ChatWithGroup", "Student ID: $studentID")
+        Log.d("ChatWithGroup", "Lecturer ID: $lecturerID")
+        dbHelper.getMessages(studentID, lecturerID, studentID, lecturerID) { messages ->
             runOnUiThread {
                 chatList.clear()
                 for (message in messages) {
-                    val username = dbHelper.getUsername(senderUserID)
-                    chatList.add(ChatItem(username, message, false)) // Added 'false' for isSender
+                    val username = dbHelper.getUsername(studentID)
+                    chatList.add(ChatItem(username, message, false))
                 }
                 adapter.notifyDataSetChanged()
             }
         }
     }
 }
+

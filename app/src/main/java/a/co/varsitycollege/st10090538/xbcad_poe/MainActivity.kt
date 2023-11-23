@@ -43,13 +43,26 @@ class MainActivity : AppCompatActivity() {
             if (GlobalData.loggedInUser != null) {
                 val user = GlobalData.loggedInUser
                 when (user?.userType) {
-                    0 -> startActivity(Intent(this, LecturerViewGroups::class.java))
-                    1 -> startActivity(Intent(this, StudentGroupList::class.java))
-                    2 -> startActivity(Intent(this, NpoProjectsList::class.java))
+                    0 -> {
+                        val intent = Intent(this, LecturerViewGroups::class.java)
+                        intent.putExtra("userID", user.userID)
+                        startActivity(intent)
+                    }
+                    1 -> {
+                        val intent = Intent(this, StudentGroupList::class.java)
+                        intent.putExtra("userID", user.userID)
+                        startActivity(intent)
+                    }
+                    2 -> {
+                        val intent = Intent(this, NpoProjectsList::class.java)
+                        intent.putExtra("userID", user.userID)
+                        startActivity(intent)
+                    }
                 }
             } else {
                 Toast.makeText(this, "Invalid Login Credentials!", Toast.LENGTH_SHORT).show()
             }
+
         }
     }
 }

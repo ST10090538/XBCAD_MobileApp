@@ -1,5 +1,8 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 import Models.User
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -26,9 +29,24 @@ class WithoutGroupAdapter(private val students: List<User>) : RecyclerView.Adapt
         holder.messageButton.setOnClickListener {
             val intent = Intent(it.context, Chat::class.java)
             intent.putExtra("studentID", student.userID)
+            val currentLecturerID = it.context.getActivity()?.intent?.getIntExtra("userID", -1) ?: -1
+            intent.putExtra("lecturerID", currentLecturerID)
             it.context.startActivity(intent)
         }
+
     }
 
     override fun getItemCount() = students.size
+
+    fun Context.getActivity(): Activity? {
+        var context = this
+        while (context is ContextWrapper) {
+            if (context is Activity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        return null
+    }
+
 }
