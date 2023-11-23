@@ -294,6 +294,7 @@ class DBHelper {
 
                         val project = Project(projectID, projectName, npoNeeds, projectStatus, assignedDate, completionDate, userID)
                         projectsList.add(project)
+                        GlobalData.projectsList += project
                     }
 
                     resultSet.close()

@@ -46,6 +46,12 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
             startActivity(intent)
         }
 
+        val projectView = findViewById<Button>(R.id.viewProjectButton)
+        projectView.setOnClickListener() {
+            val intent = Intent(this, StudentViewProject::class.java)
+            startActivity(intent)
+        }
+
         val toUserProfile = findViewById<ImageView>(R.id.groupListUserIcon)
         toUserProfile.setOnClickListener() {
             try {
@@ -234,10 +240,17 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
 
     private fun checkJoinedGroup(){
         var joinButton = findViewById<Button>(R.id.joinGroupButton)
-        val helper = DBHelper().getStudentGroups()
+        var viewProjectButton = findViewById<Button>(R.id.viewProjectButton)
+        val helper1 = DBHelper().getStudentGroups()
+        val helper2 = DBHelper().getProjects()
+        val helper3 = DBHelper().getGroups()
         GlobalData.studentGroupList = emptyList()
-        helper.start()
-        helper.join()
+        helper1.start()
+        helper2.start()
+        helper3.start()
+        helper1.join()
+        helper2.join()
+        helper3.join()
 
         val studentIdToCheck = GlobalData.loggedInUser!!.userID
 
@@ -245,6 +258,16 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
 
         if (isStudentIdFound) {
             joinButton.visibility = View.INVISIBLE
+            GlobalData.groupID = GlobalData.studentGroupList?.first{it.studentID == studentIdToCheck }?.groupID
+            val group = GlobalData.groupList.first{it.groupID == GlobalData.groupID}
+            val isProjectAssigned = GlobalData.projectsList?.any { it.projectID == group.projectID } ?: false
+
+            if(isProjectAssigned){
+                viewProjectButton.visibility = View.VISIBLE
+            }else{
+                viewProjectButton.visibility = View.INVISIBLE
+            }
+
         } else {
             joinButton.visibility = View.VISIBLE
         }

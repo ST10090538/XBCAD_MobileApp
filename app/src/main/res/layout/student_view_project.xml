@@ -24,6 +24,7 @@
         android:layout_marginTop="0dp">
 
         <LinearLayout
+            android:id="@+id/LinearLayoutId2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -38,46 +39,6 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/textViewProjectDescription"
-                android:layout_width="380dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/black"
-                android:text="Project Description"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/textViewProjectStatus"
-                android:layout_width="380dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/black"
-                android:text="Project Status"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/textViewProjectAssignedDate"
-                android:layout_width="380dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/black"
-                android:text="Project Assigned Date"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/textViewProjectCompletionDate"
-                android:layout_width="380dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/black"
-                android:text="Project Completion Date"
-                android:textSize="18sp" />
 
 
         </LinearLayout>

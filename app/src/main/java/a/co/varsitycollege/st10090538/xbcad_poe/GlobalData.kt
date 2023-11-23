@@ -13,4 +13,5 @@ object GlobalData {
     var studentGroupList: List<StudentGroup> = emptyList()
     var studentsWithoutGroupsList: MutableList<User> = mutableListOf()
     var studentsList: MutableList<User> = mutableListOf()
+    var groupID: Int? = null
 }
