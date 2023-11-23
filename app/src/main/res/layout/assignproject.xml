@@ -19,9 +19,8 @@
         android:layout_below="@+id/top"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-
         android:layout_marginTop="12dp"
-        android:text="Chat With Group"
+        android:text="Assign Project"
         android:textColor="@color/black"
         android:textSize="40sp" />
 
