@@ -45,7 +45,8 @@ class AssignProjectActivity : AppCompatActivity() {
                 val intent = Intent(this, LecturerViewGroups::class.java)
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "Please Select a Group and a Project", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please Select a Group and a Project", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -63,27 +64,23 @@ class AssignProjectActivity : AppCompatActivity() {
         val projectAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, projectNames)
         projectSpinner.adapter = projectAdapter
 
-        Thread {
-            dbHelper.getGroups(object : GroupsCallback {
-                override fun onCallback(groups: List<Group>) {
-                    groups.forEach {
-                        groupNameToIdMap[it.groupName] = it.groupID
-                    }
-                    val groupNames = groupNameToIdMap.keys.toList()
-
-
-                    runOnUiThread {
-                        val groupAdapter = ArrayAdapter(
-                            this@AssignProjectActivity,
-                            android.R.layout.simple_spinner_item,
-                            groupNames
-                        )
-                        groupSpinner.adapter = groupAdapter
-                    }
+        dbHelper.getGroups(object : GroupsCallback {
+            override fun onCallback(groups: List<Group>) {
+                groups.forEach {
+                    groupNameToIdMap[it.groupName] = it.groupID
                 }
-            })
-        }.start()
+                val groupNames = groupNameToIdMap.keys.toList()
+
+                runOnUiThread {
+                    val groupAdapter = ArrayAdapter(
+                        this@AssignProjectActivity,
+                        android.R.layout.simple_spinner_item,
+                        groupNames
+                    )
+                    groupSpinner.adapter = groupAdapter
+                }
+            }
+        })
     }
 }
-
 

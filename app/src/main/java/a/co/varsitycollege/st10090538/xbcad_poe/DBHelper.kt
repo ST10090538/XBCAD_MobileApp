@@ -712,6 +712,7 @@ class DBHelper {
                     Log.d("Database", "Executing update...")
                     preparedStatement.executeUpdate()
                     Log.d("Database", "Update executed successfully!")
+                    Log.d("Database", "Assigned project $projectID to group $groupID") // New log
                     preparedStatement.close()
                     connection.close()
                     Log.d("Database", "Database connection closed.")
