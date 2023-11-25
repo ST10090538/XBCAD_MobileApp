@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -98,6 +99,22 @@ class StudentCheckList : AppCompatActivity() {
          milestoneEditText.text.clear()*/
     }
     private fun displayMilestone(title: String, text: String, date: Date) {
+        // Create a LinearLayout to hold the milestone components (TextView and CheckBox)
+        val milestoneLayout = LinearLayout(this)
+
+        // Set layout parameters for the milestoneLayout (you can adjust the height as needed)
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            250
+        )
+        milestoneLayout.layoutParams = layoutParams
+
+        milestoneLayout.orientation = LinearLayout.HORIZONTAL
+
+        // Create a CheckBox
+        val checkBox = CheckBox(this)
+        milestoneLayout.addView(checkBox)
+
         // Create a TextView to display the milestone
         val milestoneTextView = TextView(this)
 
@@ -108,13 +125,18 @@ class StudentCheckList : AppCompatActivity() {
         // Set text color to black
         milestoneTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
 
-        // Add the TextView to the milestoneContainer
-        val container = findViewById<LinearLayout>(R.id.milestoneContainer)
-        container.addView(milestoneTextView)
+        // Add the TextView to the milestoneLayout
+        milestoneLayout.addView(milestoneTextView)
 
-        // Log statement to check if TextView is added
+        // Add the milestoneLayout to the milestoneContainer
+        val container = findViewById<LinearLayout>(R.id.milestoneContainer)
+        container.addView(milestoneLayout)
+
+        // Log statement to check if milestone components are added
         Log.d("MilestoneAdded", "Milestone added: $formattedText")
     }
+
+
 
     /*
     // Create a TextView to display the milestone

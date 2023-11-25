@@ -88,7 +88,16 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
         tools:layout_editor_absoluteX="1dp">
 
-        <LinearLayout android:id="@+id/milestoneContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/editTextText2" app:layout_constraintBottom_toTopOf="@+id/imageView4" android:layout_marginTop="16dp" android:layout_marginBottom="16dp" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout android:id="@+id/milestoneContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/editTextText2"
+            app:layout_constraintBottom_toTopOf="@+id/imageView4"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
             <!--  This is where milestone text will be dynamically added  -->
         </LinearLayout>
     </ScrollView>
