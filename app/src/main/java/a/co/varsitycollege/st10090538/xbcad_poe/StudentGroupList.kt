@@ -161,6 +161,7 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
         }).start()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showJoinGroupInputDialog(){
         val groups = GlobalData.groupList
         checkJoinedGroup()
@@ -222,6 +223,7 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun addStudentToGroupInDatabase(groupID: Int){
         val helper = DBHelper().enrollStudentInGroup(groupID, GlobalData.loggedInUser!!.userID)
         helper.start()
@@ -259,10 +261,15 @@ class StudentGroupList : AppCompatActivity(), DBHelper.OnGroupsLoadedCallback {
         if (isStudentIdFound) {
             joinButton.visibility = View.INVISIBLE
             GlobalData.groupID = GlobalData.studentGroupList?.first{it.studentID == studentIdToCheck }?.groupID
+            GlobalData.milestoneList = emptyList()
+            val helper4 = DBHelper().getMilestones(GlobalData.groupID!!)
+            helper4.start()
+            helper4.join()
             val group = GlobalData.groupList.first{it.groupID == GlobalData.groupID}
             val isProjectAssigned = GlobalData.projectsList?.any { it.projectID == group.projectID } ?: false
 
             if(isProjectAssigned){
+                GlobalData.project = GlobalData.projectsList.first { it.projectID == group.projectID }
                 viewProjectButton.visibility = View.VISIBLE
             }else{
                 viewProjectButton.visibility = View.INVISIBLE

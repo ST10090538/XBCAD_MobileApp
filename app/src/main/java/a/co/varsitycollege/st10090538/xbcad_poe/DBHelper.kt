@@ -3,6 +3,7 @@ package a.co.varsitycollege.st10090538.xbcad_poe
 import Models.Announcement
 import Models.Group
 import Models.GroupChatMessage
+import Models.Milestone
 import Models.Project
 import Models.StudentGroup
 import Models.User
@@ -891,6 +892,90 @@ class DBHelper {
                     val preparedStatement: PreparedStatement = connection.prepareStatement(query)
                     preparedStatement.setString(1, newPassword)
                     preparedStatement.setInt(2, userID)
+
+                    preparedStatement.executeUpdate()
+
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun addMilestone(description: String, projectID: Int, groupID: Int, isComplete: Int): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+                val query = "INSERT INTO Progress (description, projectId, groupId, isComplete) VALUES (?, ?, ?, ?)"
+
+                val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                preparedStatement.setString(1, description)
+                preparedStatement.setInt(2, projectID)
+                preparedStatement.setInt(3, groupID)
+                preparedStatement.setInt(4, isComplete)
+
+                preparedStatement.executeUpdate()
+
+                preparedStatement.close()
+                connection.close()
+
+                true
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }catch (ex: SQLException){
+                ex.printStackTrace()
+            }
+        }
+    }
+
+    fun getMilestones(groupID: Int): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+
+                if (connection != null) {
+                    val query = "SELECT * FROM Progress WHERE groupId = $groupID"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    val resultSet = preparedStatement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val id = resultSet.getInt("id")
+                        val description = resultSet.getString("description")
+                        val projectId = resultSet.getInt("ProjectId")
+                        val isComplete = resultSet.getInt("isComplete")
+
+                        val milestone = Milestone(id, description, projectId, groupID, isComplete)
+                        GlobalData.milestoneList += milestone
+                    }
+
+                    resultSet.close()
+                    preparedStatement.close()
+                    connection.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun updateMilestone(mileStoneText: String, isComplete:Int): Thread {
+        return Thread {
+            try {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver")
+                val connection = DriverManager.getConnection(connectionString)
+
+                if (connection != null) {
+                    val query = "UPDATE Progress SET isComplete = ? WHERE description = ? AND groupId = ?"
+                    val preparedStatement: PreparedStatement = connection.prepareStatement(query)
+                    preparedStatement.setInt(1, isComplete)
+                    preparedStatement.setString(2, mileStoneText)
+                    preparedStatement.setInt(3, GlobalData.groupID!!)
 
                     preparedStatement.executeUpdate()
 

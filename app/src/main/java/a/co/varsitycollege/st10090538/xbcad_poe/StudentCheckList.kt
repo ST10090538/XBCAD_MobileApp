@@ -1,11 +1,13 @@
 package a.co.varsitycollege.st10090538.xbcad_poe
 
+import Models.Milestone
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -20,11 +22,16 @@ class StudentCheckList : AppCompatActivity() {
     private lateinit var addMilestoneButton: Button
     private lateinit var milestoneContainer: LinearLayout
     private lateinit var dbHelper: DBHelper
+    private lateinit var milestones: List<Milestone>
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_checklist)
+
+
+        milestones = GlobalData.milestoneList!!
+        displayMilestone()
 
         val announcement = findViewById<Button>(R.id.announcementsBtn)
         announcement.setOnClickListener() {
@@ -60,10 +67,8 @@ class StudentCheckList : AppCompatActivity() {
         addMilestoneButton = findViewById(R.id.button2)
         milestoneContainer = findViewById(R.id.milestoneContainer)
 
-        // Initialize DBHelper
         dbHelper = DBHelper()
 
-        // Set click listener for the "Add Milestone" button
         addMilestoneButton.setOnClickListener {
             addMilestone()
         }
@@ -72,84 +77,68 @@ class StudentCheckList : AppCompatActivity() {
         // Get the entered milestone text
         val milestoneText = milestoneEditText.text.toString()
 
-        // Get the current date
-        val date = Date()
+
 
         // Using dbHelper to perform database operation
-        dbHelper.saveAnnouncement("username", "Milestone Title", milestoneText,  java.sql.Date(date.time))
-
+        val addMileStone = dbHelper.addMilestone(milestoneText, GlobalData.project!!.projectID, GlobalData.groupID!!,  0)
+        val milestone = Milestone(0,milestoneText,GlobalData.project!!.projectID,GlobalData.groupID!!,0)
+        addMileStone.start()
+        milestones += milestone
         // Display the added milestone dynamically
-        displayMilestone("Milestone Title", milestoneText, date)
+        displayMilestone()
 
-        // Clear the EditText after adding the milestone
         milestoneEditText.text.clear()
-        // Get the entered milestone text
-        /* val milestoneText = milestoneEditText.text.toString()
-
-         // Get the current date
-         val date = Date()
-
-         // Using dbHelper to perform database operation
-         dbHelper.saveAnnouncement("username", "Milestone Title", milestoneText,  java.sql.Date(date.time))
-
-         // Display the added milestone dynamically
-         displayMilestone("Milestone Title", milestoneText, date)
-
-         // Clear the EditText after adding the milestone
-         milestoneEditText.text.clear()*/
     }
-    private fun displayMilestone(title: String, text: String, date: Date) {
-        // Create a LinearLayout to hold the milestone components (TextView and CheckBox)
-        val milestoneLayout = LinearLayout(this)
+    private fun displayMilestone() {
 
-        // Set layout parameters for the milestoneLayout (you can adjust the height as needed)
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            250
-        )
-        milestoneLayout.layoutParams = layoutParams
+        for(milestone in milestones){
+            // Create a LinearLayout to hold the milestone components (TextView and CheckBox)
+            val milestoneLayout = LinearLayout(this)
 
-        milestoneLayout.orientation = LinearLayout.HORIZONTAL
+            // Set layout parameters for the milestoneLayout (you can adjust the height as needed)
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                250
+            )
+            milestoneLayout.layoutParams = layoutParams
 
-        // Create a CheckBox
-        val checkBox = CheckBox(this)
-        milestoneLayout.addView(checkBox)
+            milestoneLayout.orientation = LinearLayout.HORIZONTAL
 
-        // Create a TextView to display the milestone
-        val milestoneTextView = TextView(this)
+            // Create a CheckBox
+            val checkBox = CheckBox(this)
+            checkBox.isChecked = milestone.isComplete == 1
+            milestoneLayout.addView(checkBox)
+            checkBox.setOnCheckedChangeListener(){ _: CompoundButton, _: Boolean ->
+                if(checkBox.isChecked){
+                    milestone.isComplete = 1
+                }
+                else{
+                    milestone.isComplete = 0
+                }
+                val helper = DBHelper().updateMilestone(milestone.desc, milestone.isComplete)
+                helper.start()
+            }
 
-        // Set the text and formatting
-        val formattedText = "Title: $title\n$text\nDate: $date"
-        milestoneTextView.text = formattedText
+            // Create a TextView to display the milestone
+            val milestoneTextView = TextView(this)
 
-        // Set text color to black
-        milestoneTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
+            // Set the text and formatting
+            val formattedText = "Title: $title\n${milestone.desc}"
+            milestoneTextView.text = formattedText
 
-        // Add the TextView to the milestoneLayout
-        milestoneLayout.addView(milestoneTextView)
+            // Set text color to black
+            milestoneTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
 
-        // Add the milestoneLayout to the milestoneContainer
-        val container = findViewById<LinearLayout>(R.id.milestoneContainer)
-        container.addView(milestoneLayout)
+            // Add the TextView to the milestoneLayout
+            milestoneLayout.addView(milestoneTextView)
 
-        // Log statement to check if milestone components are added
-        Log.d("MilestoneAdded", "Milestone added: $formattedText")
+            // Add the milestoneLayout to the milestoneContainer
+            val container = findViewById<LinearLayout>(R.id.milestoneContainer)
+            container.addView(milestoneLayout)
+
+            // Log statement to check if milestone components are added
+            Log.d("MilestoneAdded", "Milestone added: $formattedText")
+        }
     }
 
-
-
-    /*
-    // Create a TextView to display the milestone
-    val milestoneTextView = TextView(this)
-
-    // Set the text and formatting
-    val formattedText = "Title: $title\n$text\nDate: $date"
-    milestoneTextView.text = formattedText
-
-    // Set gravity to center the text both horizontally and vertically
-    milestoneTextView.gravity = Gravity.CENTER
-
-    // Add the TextView to the container
-    milestoneContainer.addView(milestoneTextView)
-    findViewById<LinearLayout>(R.id.milestoneContainer).addView(milestoneTextView)*/
 }
